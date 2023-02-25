@@ -1,4 +1,5 @@
 # VVZ_extension  
+Browser extension for a better user experience when using https://vvz.ethz.ch.  
 
 ## Features:  
 
