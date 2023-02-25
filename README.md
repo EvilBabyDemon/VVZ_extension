@@ -1,0 +1,12 @@
+# VVZ_extension  
+
+## Features:  
+
+### Keep Structure in VVZ Search Menu:  
+Whenever you switch semester vvz removes any selections you already made under Structure. This feature allows you to keep them and easily search through different semesters.  
+
+### Filter for type of grading:  
+While searching you can filter for Session examination, End of semester examination and (un)graded Semester performance.
+
+### CourseReview:  
+Replaces all course_ids with links to https://n.ethz.ch/~lteufelbe/coursereview/course/course_id/ to easily check out reviews of a  course.  
