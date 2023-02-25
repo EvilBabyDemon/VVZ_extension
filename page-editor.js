@@ -18,10 +18,6 @@ if (window.location.href.startsWith("https://www.vvz.ethz.ch/Vorlesungsverzeichn
     keepSearch();
 }
 
-//function addUrl(string) {
-//    return string.replaceAll(/([^\/])(\d{3}-\d{4}-[0-9A-Z]{3})([^\/])/g, "$1<a href=\"https://n.ethz.ch/~lteufelbe/coursereview/course/$2/\" target=\"_blank\">$2</a>$3");
-//}
-
 function recAddUrls(e) {
     [...e].forEach(element => {
         c = element.children;
