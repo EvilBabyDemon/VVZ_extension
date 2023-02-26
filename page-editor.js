@@ -60,10 +60,11 @@ function keepSearch() {
 
     if (studsel.innerHTML == "") {
         if (localStorage.studiengangAbschnittIdExt){
-            [...stud.children].forEach(element => {
+            [...stud.children].forEach(async element => {
                 if (element.textContent == localStorage.studiengangAbschnittIdExt) {
                     element.selected = true;
                     showWait('waitStudiengangId');
+                    await new Promise(r => setTimeout(r, 300));
                     autoSubmit('sucheLehrangebot');
                     return;
                 }
@@ -139,7 +140,7 @@ function addCheckbox(id, name) {
 
     // Create a label for the checkbox
     var label = document.createElement('label');
-    label.htmlFor = id + "-check";
+    label.htmlFor = id;
     label.appendChild(document.createTextNode(name));
 
     // Append the checkbox and label to the webpage
@@ -168,7 +169,7 @@ function addCheckboxAutofill() {
     
     // Create a label for the checkbox
     var label = document.createElement('label');
-    label.htmlFor = id + "-check";
+    label.htmlFor = id;
     label.appendChild(document.createTextNode(checkname));
 
     var script = document.createElement('script');
