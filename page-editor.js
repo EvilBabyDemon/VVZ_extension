@@ -82,8 +82,6 @@ function keepSearch() {
         return element.selected;
     })[0];
 
-    console.log("bersel: " + bersel);
-
     if (bersel.innerHTML == "") {   
         if (localStorage.bereichAbschnittIdExt) {
             [...ber.children].forEach(element => {
@@ -228,7 +226,6 @@ function course_filter(session, end, semester, slow) {
         if (slow) {
             await new Promise(r => setTimeout(r, index*500));
         }
-        console.log("https://www.vvz.ethz.ch" + decodeHtml(element[1]) + "ansicht=LEISTUNGSKONTROLLE&lang=de");
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "https://www.vvz.ethz.ch" + decodeHtml(element[1]) + "ansicht=LEISTUNGSKONTROLLE&lang=de");
         xhr.send();
@@ -239,11 +236,7 @@ function course_filter(session, end, semester, slow) {
         xhr.onload = function() {
             if (xhr.status == 200) {
                 const mode = xhr.responseText.match(/<tr><td>Form<\/td><td>(.+?)<\/td><\/tr>/);
-                console.log(index);
-                console.log(decodeHtml(mode[1]) + " "   + "https://www.vvz.ethz.ch" + decodeHtml(element[1]) + "ansicht=LEISTUNGSKONTROLLE&lang=de");
                 if(!session && decodeHtml(mode[1])=="Sessionsprüfung" || !end && decodeHtml(mode[1])=="Semesterendprüfung" || !semester && decodeHtml(mode[1]).endsWith("benotete Semesterleistung")) {
-                    console.log(index);
-                    console.log(trsf[index].innerHTML);
                     trsf[index].remove();
                 }
             } else if (xhr.status == 403) {
