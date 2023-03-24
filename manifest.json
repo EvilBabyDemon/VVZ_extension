@@ -10,7 +10,7 @@
 
   "content_scripts": [
     {
-        "matches": ["https://www.vvz.ethz.ch/*"],
+        "matches": ["https://www.vvz.ethz.ch/*", "https://www.vorlesungen.ethz.ch/*"],
       "js": ["page-editor.js"]
     }
   ]
