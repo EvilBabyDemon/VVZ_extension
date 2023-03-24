@@ -1,16 +1,17 @@
 all = document.body.querySelectorAll("*");
 recAddUrls(all);
 
-if (window.location.href.startsWith("https://www.vvz.ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") && document.getElementById("customereview") == null) {
+if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") && document.getElementById("customereview") == null) {
     addCustomDiv();
     addCheckbox("sessionexam", "Session examination");
     addCheckbox("endexam", "End of semester examination");
     addCheckbox("semesterperf", "(un)graded Semester performance");
     addFilterButton();
-    addCheckbox("slow", "Slowmode to not get 403.")
+    addCheckbox("slow", "Slowmode to not get 403.");
+    addCourseSelector();
 }
 
-if (window.location.href.startsWith("https://www.vvz.ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view")) {
+if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view")) {
     addCustomDiv();
 
     addCheckboxAutofill();
@@ -262,3 +263,39 @@ function decodeHtml(html) {
     txt.innerHTML = html;
     return txt.value;
 }
+
+function addCourseSelector() {
+    var trs = document.querySelectorAll("tr");
+    trs.forEach(r => {
+        tds = r.getElementsByTagName("td");
+        if (tds.length > 1 && tds[0].className == "border-no") {
+            url = tds[1].getElementsByTagName("A")[0];
+            console.log(url);
+            console.log(url.href);
+            match = url.href.match(/lerneinheitId=\d+&semkez=\d+[SW]/);
+            addTimeButton(tds[0], match[0]);
+        }
+    });
+}
+
+
+function addTimeButton(tr_elem, id) {
+    var button = document.createElement('button');
+    button.type = "submit";
+    button.textContent = "add to timetable";
+    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    button.onclick = function(){
+        saveCourse(id);
+    };
+    tr_elem.appendChild(button);
+}
+
+function saveCourse(id) {
+    //id is of format lerneinheitId=168203 semkez=2023S
+    if(localStorage.courses) {
+        localStorage.courses = localStorage.courses + " " + id;
+    } else {
+        localStorage.courses = id;
+    } 
+}
+
