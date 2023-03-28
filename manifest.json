@@ -1,19 +1,19 @@
 {
-
   "manifest_version": 2,
   "name": "vvz-coursereview",
   "version": "1.0",
-
   "permissions": [
     "activeTab"
   ],
-
   "content_scripts": [
     {
-        "matches": ["https://www.vvz.ethz.ch/*", "https://www.vorlesungen.ethz.ch/*"],
-      "js": ["page-editor.js"]
+      "matches": [
+        "https://www.vvz.ethz.ch/*",
+        "https://www.vorlesungen.ethz.ch/*"
+      ],
+      "js": [
+        "page-editor.js"
+      ]
     }
   ]
-
-
 }
