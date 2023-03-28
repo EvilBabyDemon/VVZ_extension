@@ -17,13 +17,15 @@ if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangeb
     addCheckboxAutofill();
     addClearButton();
     keepSearch();
+
+    createTimeTable();
 }
 
 function recAddUrls(e) {
     [...e].forEach(element => {
         c = element.children;
         if (c.length == 0) {
-            if (element.tagName != "A"){ 
+            if (element.tagName != "A") {
                 element.innerHTML = element.innerHTML.replaceAll(/(\d{3}-\d{4}-[0-9A-Z]{3})/g, "<a href=\"https://n.ethz.ch/~lteufelbe/coursereview/course/$&/\" target=\"_blank\">$&</a>");
             }
         } else {
@@ -33,19 +35,19 @@ function recAddUrls(e) {
 }
 
 function autoSubmit(pFormName) {
-	var lInput = document.createElement("input");
-	lInput.type = "hidden";
-	lInput.name = "refresh";
-	lInput.value = "on";
-	var form = document.getElementsByName(pFormName)[0];
-	form.appendChild(lInput);
-	form.submit();
+    var lInput = document.createElement("input");
+    lInput.type = "hidden";
+    lInput.name = "refresh";
+    lInput.value = "on";
+    var form = document.getElementsByName(pFormName)[0];
+    form.appendChild(lInput);
+    form.submit();
 }
 function showWait(pName) {
-	try {
-		document.getElementById(pName).style.display = "inline";
-	} catch (ex) {
-	}
+    try {
+        document.getElementById(pName).style.display = "inline";
+    } catch (ex) {
+    }
 }
 
 function keepSearch() {
@@ -55,12 +57,12 @@ function keepSearch() {
 
     var stud = document.getElementById("studiengangAbschnittId");
 
-    const studsel = [...stud.children].filter( element => {
+    const studsel = [...stud.children].filter(element => {
         return element.selected;
     })[0];
 
     if (studsel.innerHTML == "") {
-        if (localStorage.studiengangAbschnittIdExt){
+        if (localStorage.studiengangAbschnittIdExt) {
             [...stud.children].forEach(async element => {
                 if (element.textContent == localStorage.studiengangAbschnittIdExt) {
                     element.selected = true;
@@ -79,11 +81,11 @@ function keepSearch() {
     if (ber == null) {
         return;
     }
-    const bersel = [...ber.children].filter( element => {
+    const bersel = [...ber.children].filter(element => {
         return element.selected;
     })[0];
 
-    if (bersel.innerHTML == "") {   
+    if (bersel.innerHTML == "") {
         if (localStorage.bereichAbschnittIdExt) {
             [...ber.children].forEach(element => {
                 if (element.textContent == localStorage.bereichAbschnittIdExt) {
@@ -102,7 +104,7 @@ function keepSearch() {
     if (unt == null) {
         return;
     }
-    const untsel = [...unt.children].filter( element => {
+    const untsel = [...unt.children].filter(element => {
         return element.selected;
     })[0];
 
@@ -155,7 +157,7 @@ function addCheckboxAutofill() {
     checkbox.type = "checkbox";
     checkbox.id = id;
     checkbox.name = checkname;
-    if(localStorage.autofill && localStorage.autofill == "false") {
+    if (localStorage.autofill && localStorage.autofill == "false") {
         checkbox.checked = false;
     } else {
         checkbox.checked = true;
@@ -165,7 +167,7 @@ function addCheckboxAutofill() {
         localStorage.autofill = "" + e.target.checked;
         keepSearch();
     }
-    
+
     // Create a label for the checkbox
     var label = document.createElement('label');
     label.htmlFor = id;
@@ -184,7 +186,7 @@ function addFilterButton() {
     button.type = "submit";
     button.textContent = "Filter";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
-    button.onclick = function(){
+    button.onclick = function () {
         course_filter(document.getElementById("sessionexam").checked, document.getElementById("endexam").checked, document.getElementById("semesterperf").checked, document.getElementById("slow").checked);
     };
     document.getElementById("customreview").appendChild(button);
@@ -196,7 +198,7 @@ function addClearButton() {
     button.type = "submit";
     button.textContent = "Clear LocalStorage";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
-    button.onclick = function(){
+    button.onclick = function () {
         localStorage.clear();
     };
     document.getElementById("customreview").appendChild(button);
@@ -209,11 +211,11 @@ function course_filter(session, end, semester, slow) {
     const errdiv = document.getElementById("coursereview403");
     if (errdiv != null) {
         errdiv.remove();
-    } 
-    if (session && end  && semester || !session && !end  && !semester) {
+    }
+    if (session && end && semester || !session && !end && !semester) {
         return;
     }
-    
+
 
     const string = document.body.innerHTML;
     const res = [...string.matchAll(/<td><b><a href="(\/Vorlesungsverzeichnis\/lerneinheit.view\?lerneinheitId=\d+&amp;semkez=\d+[SW]&amp;).+?">.+?<\/a><\/b>/g)];
@@ -225,19 +227,19 @@ function course_filter(session, end, semester, slow) {
 
     res.forEach(async (element, index) => {
         if (slow) {
-            await new Promise(r => setTimeout(r, index*500));
+            await new Promise(r => setTimeout(r, index * 500));
         }
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "https://www.vvz.ethz.ch" + decodeHtml(element[1]) + "ansicht=LEISTUNGSKONTROLLE&lang=de");
         xhr.send();
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             console.log("Network error occurred");
         }
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status == 200) {
                 const mode = xhr.responseText.match(/<tr><td>Form<\/td><td>(.+?)<\/td><\/tr>/);
-                if(!session && decodeHtml(mode[1])=="Sessionsprüfung" || !end && decodeHtml(mode[1])=="Semesterendprüfung" || !semester && decodeHtml(mode[1]).endsWith("benotete Semesterleistung")) {
+                if (!session && decodeHtml(mode[1]) == "Sessionsprüfung" || !end && decodeHtml(mode[1]) == "Semesterendprüfung" || !semester && decodeHtml(mode[1]).endsWith("benotete Semesterleistung")) {
                     trsf[index].remove();
                 }
             } else if (xhr.status == 403) {
@@ -249,10 +251,10 @@ function course_filter(session, end, semester, slow) {
                     document.getElementById("customreview").appendChild(div);
                 }
             } else {
-                console.log ("Error Code: " + xhr.status + " for index " + index);
+                console.log("Error Code: " + xhr.status + " for index " + index);
             }
         }
-        xhr.onerror = function() {
+        xhr.onerror = function () {
             console.log("Network error occurred")
         }
     });
@@ -284,7 +286,7 @@ function addTimeButton(tr_elem, id) {
     button.type = "submit";
     button.textContent = "add to timetable";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
-    button.onclick = function(){
+    button.onclick = function () {
         saveCourse(id);
     };
     tr_elem.appendChild(button);
@@ -292,10 +294,224 @@ function addTimeButton(tr_elem, id) {
 
 function saveCourse(id) {
     //id is of format lerneinheitId=168203 semkez=2023S
-    if(localStorage.courses) {
+    if (localStorage.courses) {
         localStorage.courses = localStorage.courses + " " + id;
     } else {
         localStorage.courses = id;
-    } 
+    }
 }
 
+
+function createTimeTable() {
+    var button = document.createElement('button');
+    button.type = "submit";
+    button.textContent = "Create Timetable";
+    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    button.onclick = function () {
+        timeTable();
+    };
+    document.getElementById("customreview").appendChild(button);
+    document.getElementById("customreview").appendChild(document.createElement('br'));
+
+}
+
+function timeTable() {
+    script = document.createElement("script");
+    script.innerHTML = "table.tablelist { width:100%; border-collapse:collapse ; empty-cells:show; border-bottom:1px solid #ccc; table-layout:auto; } table.tablelist th { padding: 3px 5px 3px 5px; vertical-align: top; border-top: 1px solid #ccc; text-align:left; font-size:11px; background-color:#eee;} table.tablelist td { padding: 0; border-top: 1px solid #ccc; vertical-align: top;} .td-border-top { border-top: 1px solid #ccc;} table.tablelist td.td-border-top-dotted, .td-border-top-dotted { border-top: 1px dotted #ccc;} .td-border-bottom { border-bottom: 1px solid #ccc;} .td-border-right { border-right:1px solid #ccc;} .td-border-left { border-left: 1px solid #ccc;} .td-border-left-dotted { border-left: 1px solid #e6e6e6;} table.tablelist .td-border-top-none { border-top: none; } table.tablelist.tablelist-ng td:first-child { vertical-align: middle; padding-left: 0; } table.table-nested { width:auto !important; table-layout: auto !important; border-collapse:collapse;} table.table-nested td { padding: 0; border:none; vertical-align: top;}";
+    document.getElementsByTagName("head")[0].appendChild(script);
+
+    const DAY_LOOKUP = {
+        "Mo": "Mon",
+        "Di": "Tue",
+        "Mi": "Wed",
+        "Do": "Thu",
+        "Fr": "Fri"
+    };
+
+    function extractData(document) {
+        const title = document.getElementById("contentTop").textContent.replace("\n", "");
+        const courseID = title.split(/ +/)[0];
+        const courseName = title.split(/ +/).slice(1).join(" ");
+
+        const courseTable = [...document.querySelectorAll(".inside > table")[1].querySelector("tbody").children].slice(1);
+
+        let hours = [];
+
+        for (const row of courseTable) {
+            const courseType = row.querySelectorAll("td")[0].textContent.split(" ")[1];
+            const numHours = parseInt(row.querySelectorAll("td")[2].textContent);
+            const table = row.querySelectorAll("td")[3];
+
+            const fields = table.getElementsByTagName("td");
+            let currDay = "";
+            let data = [];
+            for (let i = 0; i < fields.length; i += 3) {
+                if (fields[i].textContent != "") {
+                    currDay = DAY_LOOKUP[fields[i].textContent];
+                    if (currDay == undefined) {
+                        currDay = fields[i].textContent;
+                    }
+                }
+                const time = fields[i + 1].textContent;
+                const timeFrom = parseInt(time.split("-")[0].split(":")[0]);
+                const timeTo = parseInt(time.split("-")[1].split(":")[0]);
+
+
+                data.push({
+                    room: fields[i + 2].textContent.replace(" »", ""),
+                    day: currDay,
+                    start: timeFrom,
+                    end: timeTo
+                });
+            }
+            hours.push({
+                type: courseType,
+                hourCount: numHours,
+                time: data
+            })
+        }
+        return {
+            name: courseName,
+            id: courseID,
+            hours: hours
+        };
+    }
+
+    const MAIN_REQ_URL = "https://www.vorlesungen.ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?lang=de&search=on&semkez=2023S&studiengangTyp=&deptId=&studiengangAbschnittId=102579&bereichAbschnittId=&lerneinheitstitel=&lerneinheitscode=&famname=&rufname=&wahlinfo=&lehrsprache=&periodizitaet=&kpRange=0%2C999&katalogdaten=&_strukturAus=on&search=Suchen";
+
+    async function main() {
+        courseRows = localStorage.courses.split(" ");
+        let htmls = [];
+        for (const r of courseRows) {
+            console.log(`https://www.vorlesungen.ethz.ch/lerneinheit.view?${r}`);
+            let unitReq = await fetch(`https://www.vorlesungen.ethz.ch/lerneinheit.view?${r}`);
+            let unitHTML = await unitReq.text();
+            htmls.push(unitHTML);
+            console.log(`https://www.vorlesungen.ethz.ch${r}`);
+            console.log(unitReq.status);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+        let dataset = [];
+        for (const html of htmls) {
+            const dom = new DOMParser().parseFromString(html.replace(/&nbsp;/g, " "), "text/html");
+            const data = extractData(dom);
+            dataset.push(data);
+            console.log(data.id, data.name, data.hours);
+        }
+
+
+        //Create html table 
+        table = document.createElement("table");
+        table.className = "classlist";
+        table.style = "width: 100%;";
+        document.getElementById("customreview").appendChild(table);
+        tbody = document.createElement("tbody");
+        trh = document.createElement("tr");
+        thf = document.createElement("th");
+        thf.style = "width:5%; font-size: 14px; text-align: left; font-weight: normal; padding: 3px 5px 3px 5px; vertical-align: top; border-top: 1px solid #ccc; background-color:#eee";
+        thf.text = "Begin";
+        trh.appendChild(thf);
+
+        for (d of ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]) {
+            th = document.createElement("th");
+            th.style = "width:19%; font-size: 14px; text-align: center; padding: 3px 5px 3px 5px; vertical-align: top; border-top: 1px solid #ccc; background-color:#eee";
+            th.textContent = d;
+            trh.appendChild(th);
+        }
+        tbody.appendChild(trh);
+
+        for (let i = 8; i < 20; i++) {
+            tr = document.createElement("tr");
+            tdf = document.createElement("td");
+            tdf.style = "height: 60px; vertical-align: top; padding: 5px 0px; border-right: 1px solid #ccc;";
+            tdf.textContent = i;
+            tr.appendChild(tdf);
+            for (day of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+                coursetext = [];
+                skip = false;
+                maxSpan = 0;
+                for (entry of dataset) {
+                    for (hours of entry.hours) {
+                        rowspan = 0;
+                        coursetype = "";
+                        for (time of hours.time) {
+                            if (time.day == day) {
+                                if (time.start == i) {
+                                    coursetype = hours.type;
+                                    rowspan = Math.max(rowspan, time.end - time.start);
+                                    maxSpan = Math.max(maxSpan, time.end - time.start);
+                                } else if (time.start < i && i < time.end) {
+                                    skip = true;
+                                }
+                            }
+                        }
+                        if (coursetype != "") {
+                            coursetext.push([coursetype + " " + entry.name, rowspan]);
+                        }
+                    }
+                }
+
+                // No data for curr hour + rowspan above is occup
+                if (skip && coursetext.length == 0) {
+                    continue;
+                }
+
+
+                td = document.createElement("td");
+                if (coursetext.length != 0) {
+                    td.style = "padding: 0px; height: 100%; border-top: none;";
+
+                    tableIn = document.createElement("table");
+                    tableIn.style = "height: 100% !important; border:none; padding: 0px; margin: 0px; overflow:hidden;";
+                    tbodyIn = document.createElement("tbody");
+                    trIn = document.createElement("tr");
+
+                    td.rowSpan = maxSpan;
+                    counter = new Array(12).fill(0);
+                    for ([text, rowspan] of coursetext) {
+                        tdIn = document.createElement("td");
+
+                        tdIn.rowSpan = rowspan;
+                        tdIn.style = "font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; font-weight: bold;  color: #666;"
+                        tdIn.textContent = text;
+                        trIn.appendChild(tdIn);
+
+                        if (rowspan < maxSpan) {
+                            for (let j = rowspan + 1; j <= maxSpan; j++) {
+                                counter[j] += 1;
+                            }
+                        }
+                    }
+                    tbodyIn.appendChild(trIn);
+
+                    for (x of counter) {
+                        if (x != 0) {
+                            trIn = document.createElement("tr");
+                            for (let k = 0; k < x; k++) {
+                                tdIn = document.createElement("td");
+                                tdIn.style = "background:#ffffff; padding: 0px; border: none; border-right: 1px solid #ccc;";
+                                tdIn.appendChild(document.createElement("br"));
+                                trIn.appendChild(tdIn);
+                            }
+                            tbodyIn.appendChild(trIn);
+                        }
+                    }
+
+
+                    tableIn.appendChild(tbodyIn);
+                    td.appendChild(tableIn);
+                } else {
+                    td.style = "background:#ffffff;border-right: 1px solid #ccc;";
+                    td.appendChild(document.createElement("br"));
+                }
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        }
+        table.appendChild(tbody);
+        document.getElementById("customreview").appendChild(table);
+    }
+
+    main();
+}
