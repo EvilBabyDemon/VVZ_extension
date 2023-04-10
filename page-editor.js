@@ -50,77 +50,46 @@ function showWait(pName) {
     }
 }
 
+function keepField(field, storage, waitField) {
+
+    if (field == null) {
+        return;
+    }
+
+    const fieldsel = [...field.children].filter(element => {
+        return element.selected;
+    })[0];
+
+    if (fieldsel.textContent == "") {
+        if (storage) {
+            [...field.children].forEach(async element => {
+                if (element.textContent == storage) {
+                    element.selected = true;
+                    if (waitField != "") {
+                        showWait(waitField);
+                        await new Promise(r => setTimeout(r, 300));
+                        autoSubmit('sucheLehrangebot');
+                    }
+                    return;
+                }
+            });
+        }
+    } else {
+        storage = fieldsel.textContent;
+    }
+}
+
 function keepSearch() {
     if (localStorage.autofill && localStorage.autofill == "false") {
         return;
     }
 
-    var stud = document.getElementById("studiengangAbschnittId");
+    keepField(document.getElementById("studiengangTyp"), localStorage.studiengangIdExt, "waitStudiengang");
+    keepField(document.getElementById("deptId"), localStorage.deptIdExt, "waitDepartment");
+    keepField(document.getElementById("studiengangAbschnittId"), localStorage.studiengangAbschnittIdExt, "waitStudiengangId");
+    keepField(document.getElementById("bereichAbschnittId"), localStorage.bereichAbschnittIdExt, "waitBereich");
+    keepField(document.getElementById("unterbereichAbschnittId"), localStorage.unterbereichAbschnittIdExt, "");
 
-    const studsel = [...stud.children].filter(element => {
-        return element.selected;
-    })[0];
-
-    if (studsel.innerHTML == "") {
-        if (localStorage.studiengangAbschnittIdExt) {
-            [...stud.children].forEach(async element => {
-                if (element.textContent == localStorage.studiengangAbschnittIdExt) {
-                    element.selected = true;
-                    showWait('waitStudiengangId');
-                    await new Promise(r => setTimeout(r, 300));
-                    autoSubmit('sucheLehrangebot');
-                    return;
-                }
-            });
-        }
-    } else {
-        localStorage.studiengangAbschnittIdExt = studsel.textContent;
-    }
-
-    var ber = document.getElementById("bereichAbschnittId");
-    if (ber == null) {
-        return;
-    }
-    const bersel = [...ber.children].filter(element => {
-        return element.selected;
-    })[0];
-
-    if (bersel.innerHTML == "") {
-        if (localStorage.bereichAbschnittIdExt) {
-            [...ber.children].forEach(element => {
-                if (element.textContent == localStorage.bereichAbschnittIdExt) {
-                    element.selected = true;
-                    showWait('waitBereich');
-                    autoSubmit('sucheLehrangebot');
-                    return;
-                }
-            });
-        }
-    } else {
-        localStorage.bereichAbschnittIdExt = bersel.textContent;
-    }
-
-    var unt = document.getElementById("unterbereichAbschnittId");
-    if (unt == null) {
-        return;
-    }
-    const untsel = [...unt.children].filter(element => {
-        return element.selected;
-    })[0];
-
-    if (untsel.innerHTML == "") {
-        if (localStorage.unterbereichAbschnittIdExt) {
-
-            [...unt.children].forEach(element => {
-                if (element.textContent == localStorage.unterbereichAbschnittIdExt) {
-                    element.selected = true;
-                    return;
-                }
-            });
-        }
-    } else {
-        localStorage.unterbereichAbschnittIdExt = untsel.textContent;
-    }
 }
 
 
@@ -421,97 +390,174 @@ function timeTable() {
         }
         tbody.appendChild(trh);
 
+        showAll = false; // make this setable
+        perDay = new Map();
+        for (day of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+            perHour = new Map();
+            for (let i = 8; i < 20; i++) {
+                currHour = new Map();
+                for (let j = 0; j < dataset.length; j++) {
+                    entry = dataset[j]
+                    for (hours of entry.hours) {
+                        for (time of hours.time) {
+                            if (time.day == day && time.start <= i && i < time.end) {
+                                //hours.type time.start time.end  if show all + time.room
+                                timeId = entry.id + " " + hours.type + " " + time.start + " " + time.end;
+
+                                text = hours.type + " " + entry.name;
+                                if (showAll) {
+                                    timeId = timeId + " " + time.room;
+                                    text = text + " " + time.room;
+                                }
+
+                                if (currHour.get(timeId) == null) {
+                                    currHour.set(timeId, [text, time.end - time.start, time.start == i]);
+                                }
+                            }
+                        }
+                    }
+                }
+                perHour.set(i, currHour);
+            }
+            perDay.set(day, perHour);
+        }
+
+        //fixing overlap bugs
+        allOverlaps = new Map();
+        for (day of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+            overlaps = new Map();
+
+            for (let i = 8; i < 20;) {
+                minT = i;
+                maxT = i;
+
+                //invariant:
+                // there is no course that started before i and is still going at i 
+                redo: for (let j = 0; j < dataset.length; j++) {
+                    entry = dataset[j]
+                    for (hours of entry.hours) {
+                        for (time of hours.time) {
+                            if (time.day != day) {
+                                continue;
+                            }
+                            if (minT == time.start && maxT < time.end || minT <= time.start && time.start < maxT && time.end > maxT) {
+                                maxT = time.end;
+                                j = -1;
+                                continue redo;
+                                //start from start 
+                            }
+                        }
+                    }
+                }
+                //no course at all
+                if (minT == maxT) {
+                    i++;
+                    continue;
+                }
+                overlaps.set(i, maxT - minT);
+                i = maxT
+            }
+            allOverlaps.set(day, overlaps);
+        }
+
         for (let i = 8; i < 20; i++) {
             tr = document.createElement("tr");
             tdf = document.createElement("td");
             tdf.style = "height: 60px; vertical-align: top; padding: 5px 0px; border-right: 1px solid #ccc;";
             tdf.textContent = i;
             tr.appendChild(tdf);
+
             for (day of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
-                coursetext = [];
-                skip = false;
-                maxSpan = 0;
-                for (entry of dataset) {
-                    for (hours of entry.hours) {
-                        rowspan = 0;
-                        coursetype = "";
-                        for (time of hours.time) {
-                            if (time.day == day) {
-                                if (time.start == i) {
-                                    coursetype = hours.type;
-                                    rowspan = Math.max(rowspan, time.end - time.start);
-                                    maxSpan = Math.max(maxSpan, time.end - time.start);
-                                } else if (time.start < i && i < time.end) {
-                                    skip = true;
+                empty = true;
+                dayOv = allOverlaps.get(day);
+                td = document.createElement("td");
+                if (dayOv != null) {
+                    for (ov of dayOv) {
+                        if (ov[0] == i) {
+                            //what is the width? / max courses overlap in the same time frame
+                            td.style = "padding: 0px; height: 100%; border-top: none;";
+                            td.rowSpan = ov[1];
+
+                            maxCol = 0;
+                            for (let j = i; j < i + ov[1]; j++) {
+                                if (perDay.get(day).get(j) != null) {
+                                    maxCol = Math.max(maxCol, perDay.get(day).get(j).size);
                                 }
                             }
-                        }
-                        if (coursetype != "") {
-                            coursetext.push([coursetype + " " + entry.name, rowspan]);
+
+                            tableIn = document.createElement("table");
+                            tableIn.style = "height: 100% !important; border:none; padding: 0px; margin: 0px; overflow:hidden;";
+                            tbodyIn = document.createElement("tbody");
+
+                            for (let j = i; j < i + ov[1]; j++) {
+                                trIn = document.createElement("tr");
+                                addedData = false;
+                                for (values of perDay.get(day).get(j)) {
+                                    if (values[1][2] == false) {
+                                        continue;
+                                    }
+                                    tdIn = document.createElement("td");
+
+                                    tdIn.rowSpan = values[1][1];
+                                    tdIn.style = "font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; font-weight: bold;  color: #666;"
+                                    tdIn.textContent = values[1][0];
+                                    trIn.appendChild(tdIn);
+                                    addedData = true;
+                                }
+                                for (let k = perDay.get(day).get(j).size; k < maxCol; k++) {
+                                    tdIn = document.createElement("td");
+                                    trIn.appendChild(tdIn);
+                                    addedData = true;
+                                }
+                                if (addedData) {
+                                    tbodyIn.appendChild(trIn);
+                                }
+                            }
+
+                            tableIn.appendChild(tbodyIn);
+                            td.appendChild(tableIn);
+
+                            empty = false;
+                            tr.appendChild(td);
+                            //continue? either way there should be no data that enters this case anymore
+                        } else if (ov[0] < i && i < ov[0] + ov[1]) {
+                            //do nothing as cell from above should fill it already
+                            empty = false;
+                            continue;
+                            //continue? either way there should be no data that enters this case anymore
                         }
                     }
                 }
 
-                // No data for curr hour + rowspan above is occup
-                if (skip && coursetext.length == 0) {
-                    continue;
-                }
-
-
-                td = document.createElement("td");
-                if (coursetext.length != 0) {
-                    td.style = "padding: 0px; height: 100%; border-top: none;";
-
-                    tableIn = document.createElement("table");
-                    tableIn.style = "height: 100% !important; border:none; padding: 0px; margin: 0px; overflow:hidden;";
-                    tbodyIn = document.createElement("tbody");
-                    trIn = document.createElement("tr");
-
-                    td.rowSpan = maxSpan;
-                    counter = new Array(12).fill(0);
-                    for ([text, rowspan] of coursetext) {
-                        tdIn = document.createElement("td");
-
-                        tdIn.rowSpan = rowspan;
-                        tdIn.style = "font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; font-weight: bold;  color: #666;"
-                        tdIn.textContent = text;
-                        trIn.appendChild(tdIn);
-
-                        if (rowspan < maxSpan) {
-                            for (let j = rowspan + 1; j <= maxSpan; j++) {
-                                counter[j] += 1;
-                            }
-                        }
-                    }
-                    tbodyIn.appendChild(trIn);
-
-                    for (x of counter) {
-                        if (x != 0) {
-                            trIn = document.createElement("tr");
-                            for (let k = 0; k < x; k++) {
-                                tdIn = document.createElement("td");
-                                tdIn.style = "background:#ffffff; padding: 0px; border: none; border-right: 1px solid #ccc;";
-                                tdIn.appendChild(document.createElement("br"));
-                                trIn.appendChild(tdIn);
-                            }
-                            tbodyIn.appendChild(trIn);
-                        }
-                    }
-
-
-                    tableIn.appendChild(tbodyIn);
-                    td.appendChild(tableIn);
-                } else {
+                if (empty) {
                     td.style = "background:#ffffff;border-right: 1px solid #ccc;";
                     td.appendChild(document.createElement("br"));
+                    tr.appendChild(td);
                 }
-                tr.appendChild(td);
             }
             tbody.appendChild(tr);
         }
+
+
         table.appendChild(tbody);
         document.getElementById("customreview").appendChild(table);
-    }
 
+        //write non weekly lectures below timetable
+        extraText = document.createElement("div");
+        extraText.textContent = "Non weekly lectures:";
+
+        for (entry of dataset) {
+            for (hours of entry.hours) {
+                for (time of hours.time) {
+                    if (!["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].includes(time.day)) {
+                        innerExtra = document.createElement("p");
+                        innerExtra.textContent = entry.name + " " + entry.id + " " + hours.type + " " + hours.id + " " + time.day + " " + time.start + "-" + time.end;
+                        extraText.appendChild(innerExtra);
+                    }
+                }
+            }
+        }
+        document.getElementById("customreview").appendChild(extraText);
+    }
     main();
 }
