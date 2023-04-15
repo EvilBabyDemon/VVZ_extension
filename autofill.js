@@ -44,7 +44,7 @@ async function keepField(field, storage, waitField) {
 }
 
 async function keepSearch() {
-    if (localStorage.autofill && localStorage.autofill == "false") {
+    if (localStorage.autofiller && localStorage.autofiller == "false") {
         return;
     }
     var stud = await keepField(document.getElementById("studiengangTyp"), "studiengangTypExt", "");
@@ -64,21 +64,21 @@ async function keepSearch() {
     keepField(document.getElementById("unterbereichAbschnittId"), "unterbereichAbschnittIdExt", "");
 }
 
-function addCheckboxAutofill() {
-    var id = "autofill";
-    var checkname = "Autofill Structure";
+function addCheckboxautofiller() {
+    var id = "autofiller";
+    var checkname = "autofiller Structure";
     var checkbox = document.createElement('input');
     checkbox.type = "checkbox";
     checkbox.id = id;
     checkbox.name = checkname;
-    if (localStorage.autofill && localStorage.autofill == "false") {
+    if (localStorage.autofiller && localStorage.autofiller == "false") {
         checkbox.checked = false;
     } else {
         checkbox.checked = true;
     }
     checkbox.addEventListener('input', updateValue)
     function updateValue(e) {
-        localStorage.autofill = "" + e.target.checked;
+        localStorage.autofiller = "" + e.target.checked;
         keepSearch();
     }
 
