@@ -57,10 +57,6 @@ function createTimeTable() {
 }
 
 async function timeTable() {
-    //script = document.createElement("style");
-    //script.innerHTML = "table.tablelist { width:100%; border-collapse:collapse ; empty-cells:show; border-bottom:1px solid #ccc; table-layout:auto; } table.tablelist th { padding: 3px 5px 3px 5px; vertical-align: top; border-top: 1px solid #ccc; text-align:left; font-size:11px; background-color:#eee;} table.tablelist td { padding: 0; border-bottom: 1px solid #ccc; vertical-align: top;} table.tablelist td.td-border-top-dotted, .td-border-top-dotted { border-top: 1px dotted #ccc;} .td-border-bottom { border-bottom: 1px solid #ccc;} .td-border-right { border-right:1px solid #ccc;} .td-border-left { border-left: 1px solid #ccc;} .td-border-left-dotted { border-left: 1px solid #e6e6e6;} table.tablelist .td-border-top-none { border-top: none; } table.tablelist.tablelist-ng td:first-child { vertical-align: middle; padding-left: 0; } table.table-nested { width:auto !important; table-layout: auto !important; border-collapse:collapse;} table.table-nested td { padding: 0; border:none; vertical-align: top;}";
-    //document.head.appendChild(script);
-    //check if I need this?
 
     const DAY_LOOKUP = {
         "Mo": "Mon",
