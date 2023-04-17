@@ -14,7 +14,27 @@ function showWait(pName) {
     }
 }
 
-async function keepField(field, storage, waitField) {
+function saveState(event) {
+    if (localStorage.autofiller && localStorage.autofiller == "false") {
+        return;
+    }
+    var storage = event.originalTarget.id + "Ext";
+    var tar = event.currentTarget;
+    localStorage.setItem(storage, tar.options[tar.selectedIndex].text);
+}
+
+function addListener() {
+    for (id of ["studiengangTyp", "deptId", "studiengangAbschnittId", "bereichAbschnittId", "unterbereichAbschnittId"]) {
+        var elem = document.getElementById(id);
+        if (elem != null) {
+            elem.addEventListener("change", saveState);
+        }
+    }
+}
+
+async function keepField(id, waitField) {
+    var field = document.getElementById(id);
+    var storage = id + "Ext";
     if (field == null) {
         return false;
     }
@@ -23,48 +43,45 @@ async function keepField(field, storage, waitField) {
         return element.selected;
     })[0];
 
-    if (fieldsel.textContent == "") {
-        if (localStorage.getItem(storage)) {
-            for (var child of field.children) {
-                if (child.textContent == localStorage.getItem(storage)) {
-                    child.selected = true;
-                    if (waitField != "") {
-                        showWait(waitField);
-                        await new Promise(r => setTimeout(r, 300));
-                        autoSubmit('sucheLehrangebot');
-                    }
-                    return true;
+    if (fieldsel.textContent == "" && localStorage.getItem(storage)) {
+        for (var child of field.children) {
+            if (child.textContent == localStorage.getItem(storage)) {
+                child.selected = true;
+                if (waitField != "") {
+                    showWait(waitField);
+                    await new Promise(r => setTimeout(r, 300));
+                    autoSubmit('sucheLehrangebot');
                 }
+                return true;
             }
         }
-    } else {
-        localStorage.setItem(storage, fieldsel.textContent);
     }
     return false;
 }
 
 async function keepSearch() {
+    addListener();
     if (localStorage.autofiller && localStorage.autofiller == "false") {
         return;
     }
-    var stud = await keepField(document.getElementById("studiengangTyp"), "studiengangTypExt", "");
-    var deptId = await keepField(document.getElementById("deptId"), "deptIdExt", "");
+    var stud = await keepField("studiengangTyp", "");
+    var deptId = await keepField("deptId", "");
     if (stud || deptId) {
         showWait("waitSemester");
         await new Promise(r => setTimeout(r, 300));
         autoSubmit('sucheLehrangebot');
         return;
     }
-    if (await keepField(document.getElementById("studiengangAbschnittId"), "studiengangAbschnittIdExt", "waitStudiengangId")) {
+    if (await keepField("studiengangAbschnittId", "waitStudiengangId")) {
         return;
     }
-    if (await keepField(document.getElementById("bereichAbschnittId"), "bereichAbschnittIdExt", "waitBereich")) {
+    if (await keepField("bereichAbschnittId", "waitBereich")) {
         return;
     }
-    keepField(document.getElementById("unterbereichAbschnittId"), "unterbereichAbschnittIdExt", "");
+    keepField("unterbereichAbschnittId", "");
 }
 
-function addCheckboxautofiller() {
+function addCheckboxAutofill() {
     var id = "autofiller";
     var checkname = "autofiller Structure";
     var checkbox = document.createElement('input');
