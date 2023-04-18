@@ -1,51 +1,58 @@
-if (localStorage.getItem("all") != null && localStorage.getItem("all") != "true") {
-    exit();
+getCookie();
+async function getCookie() {
+    var cookieMap = browser.runtime.sendMessage({ data: window.location.hostname });
+    main(await cookieMap);
 }
 
+function main(cookieMap) {
+    if (cookieMap != null && !cookieMap.get("all")) {
+        return;
+    }
 
-// search results
-if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") && document.getElementById("customereview") == null) {
-    addCustomDiv();
-    if (localStorage.getItem("filter") == null || localStorage.getItem("filter") == "true") {
-        addCheckbox("sessionexam", "Session examination");
-        addCheckbox("endexam", "End of semester examination");
-        addCheckbox("semesterperf", "(un)graded Semester performance");
-        addFilterButton();
-        addCheckbox("slow", "Slowmode to not get 403.");
+    // search results
+    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") && document.getElementById("customereview") == null) {
+        addCustomDiv();
+        if (cookieMap == null || cookieMap.get("filter")) {
+            addCheckbox("sessionexam", "Session examination");
+            addCheckbox("endexam", "End of semester examination");
+            addCheckbox("semesterperf", "(un)graded Semester performance");
+            addFilterButton();
+            addCheckbox("slow", "Slowmode to not get 403.");
+        }
+        if (cookieMap == null || cookieMap.get("rating")) {
+            addCourseReviewRating();
+        }
+        if (cookieMap == null || cookieMap.get("timetable")) {
+            addCourseSelector();
+        }
     }
-    if (localStorage.getItem("rating") == null || localStorage.getItem("rating") == "true") {
-        addCourseReviewRating();
-    }
-    if (localStorage.getItem("timetable") == null || localStorage.getItem("timetable") == "true") {
-        addCourseSelector();
-    }
-}
 
-// search selection
-if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view")) {
-    addCustomDiv();
+    // search selection
+    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view")) {
+        addCustomDiv();
 
-    addClearButton("Clear all LocalStorage", function () { localStorage.clear(); });
-    if (localStorage.getItem("autofill") == null || localStorage.getItem("autofill") == "true") {
-        addCheckboxAutofill();
-        addClearButton("Clear Search", function () {
-            localStorage.removeItem("studiengangTypExt");
-            localStorage.removeItem("deptIdExt");
-            localStorage.removeItem("studiengangAbschnittIdExt");
-            localStorage.removeItem("bereichAbschnittIdExt");
-            localStorage.removeItem("unterbereichAbschnittIdExt");
-        });
-        keepSearch();
+        addClearButton("Clear all LocalStorage", function () { localStorage.clear(); });
+        if (cookieMap == null || cookieMap.get("autofill")) {
+            addCheckboxAutofill();
+            addClearButton("Clear Search", function () {
+                localStorage.removeItem("studiengangTypExt");
+                localStorage.removeItem("deptIdExt");
+                localStorage.removeItem("studiengangAbschnittIdExt");
+                localStorage.removeItem("bereichAbschnittIdExt");
+                localStorage.removeItem("unterbereichAbschnittIdExt");
+            });
+            keepSearch();
+        }
+        if (cookieMap == null || cookieMap.get("timetable")) {
+            createTimeTable();
+            addClearButton("Clear Courses", function () { localStorage.removeItem("courses"); });
+        }
     }
-    if (localStorage.getItem("timetable") == null || localStorage.getItem("timetable") == "true") {
-        createTimeTable();
-        addClearButton("Clear Courses", function () { localStorage.removeItem("courses"); });
-    }
-}
 
-if (localStorage.getItem("crlinks") == null || localStorage.getItem("crlinks") == "true") {
-    var all = document.body.querySelectorAll("*");
-    recAddUrls(all);
+    if (cookieMap == null || cookieMap.get("crlinks")) {
+        var all = document.body.querySelectorAll("*");
+        recAddUrls(all);
+    }
 }
 
 function addCustomDiv() {
