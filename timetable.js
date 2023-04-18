@@ -28,7 +28,6 @@ function saveCourse(id, courseName) {
     if (localStorage.courses) {
         courseMap = new Map(JSON.parse(localStorage.courses));
     }
-    console.log(id + " " + courseName);
     courseMap.set(id, courseName);
     localStorage.courses = JSON.stringify(Array.from(courseMap.entries()));
 }
@@ -140,7 +139,6 @@ async function timeTable() {
         const dom = new DOMParser().parseFromString(html.replace(/&nbsp;/g, " "), "text/html");
         const data = extractData(dom);
         dataset.push(data);
-        console.log(data.id, data.name, data.hours);
     }
 
 
