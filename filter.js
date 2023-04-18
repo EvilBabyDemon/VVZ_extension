@@ -29,9 +29,23 @@ function course_filter(session, end, semester, slow) {
     });
 
     res.forEach(async (element, index) => {
+        if (trsf[index].classList.contains("Sessionsprüfung")) {
+            trsf[index].hidden = !session;
+            return;
+        }
+        if (trsf[index].classList.contains("benotete-Semesterleistung")) {
+            trsf[index].hidden = !end;
+            return;
+        }
+        if (trsf[index].classList.contains("Sessionsprüfung")) {
+            trsf[index].hidden = !semester;
+            return;
+        }
         if (slow) {
             await new Promise(r => setTimeout(r, index * 500));
         }
+
+
         const xhr = new XMLHttpRequest();
         
         var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
@@ -45,8 +59,13 @@ function course_filter(session, end, semester, slow) {
         xhr.onload = function () {
             if (xhr.status == 200) {
                 const mode = xhr.responseText.match(/<tr><td>Form<\/td><td>(.+?)<\/td><\/tr>/);
-                if (!session && decodeHtml(mode[1]) == "Sessionsprüfung" || !end && decodeHtml(mode[1]) == "Semesterendprüfung" || !semester && decodeHtml(mode[1]).endsWith("benotete Semesterleistung")) {
-                    trsf[index].remove();
+                var examtype = decodeHtml(mode[1]);
+                if (examtype.endsWith("benotete Semesterleistung")) {
+                    examtype = "benotete-Semesterleistung";
+                }
+                trsf[index].classList.add(examtype);
+                if (!session && examtype == "Sessionsprüfung" || !end && examtype == "Semesterendprüfung" || !semester && examtype.endsWith("benotete Semesterleistung")) {
+                    trsf[index].hidden = true;
                 }
             } else if (xhr.status == 403) {
                 if (document.getElementById("coursereview403") == null) {
