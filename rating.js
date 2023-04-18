@@ -41,7 +41,7 @@ function addCourseReviewRating() {
                     for (resp of reg) {
                         var td = document.createElement("td")
                         if (resp[1] != "null") {
-                            td.textContent = resp[1];    
+                            td.textContent = parseFloat(resp[1]).toFixed(2);
                         }
                         r.appendChild(td);
                     }
