@@ -28,7 +28,6 @@ function addCourseReviewRating() {
 
         if (tds.length > 5 && tds[0].className == "border-no") {
             const courseNr = tds[0].textContent;
-            console.log("https://rubberducky.vsos.ethz.ch:1855/rating/" + courseNr);
             const xhr = new XMLHttpRequest();
             xhr.open("GET", "https://rubberducky.vsos.ethz.ch:1855/rating/" + courseNr);
             xhr.send();
