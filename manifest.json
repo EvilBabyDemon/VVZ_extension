@@ -12,12 +12,17 @@
     "https://rubberducky.vsos.ethz.ch/*",
     "https://www.vvz.ethz.ch/*",
     "https://www.vorlesungen.ethz.ch/*"
-
   ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
-  },  
+  },
+  "icons": {
+    "48": "icon.svg",
+    "96": "icon.svg"
+  },
   "content_scripts": [
     {
       "matches": [
