@@ -1,0 +1,26 @@
+name: Firefox Addon Action
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  #push:
+  #  branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Firefox Addon Action
+      # You may pin to the exact commit or the version.
+      # uses: trmcnvn/firefox-addon@0d05671269b82c69c3f22ed86d8e772e89d47cf4
+      uses: trmcnvn/firefox-addon@v1
+      with:
+        uuid: '{64a9abc5-b0dd-4855-831c-7b73290c0613}'
+        manifest: manifest.json
+        api-key: ${{ secrets.FIREFOX_API_KEY }}
+        api-secret: ${{ secrets.FIREFOX_API_SECRET }}
