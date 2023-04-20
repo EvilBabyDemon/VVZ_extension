@@ -268,7 +268,6 @@ async function timeTable() {
 
                         for (let j = i; j < i + ov[1]; j++) {
                             var trIn = document.createElement("tr");
-                            var addedData = false;
                             for (values of perDay.get(day).get(j)) {
                                 if (values[1][2] == false) {
                                     continue;
@@ -279,17 +278,13 @@ async function timeTable() {
                                 tdIn.style = "font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
                                 tdIn.textContent = values[1][0];
                                 trIn.appendChild(tdIn);
-                                addedData = true;
                             }
                             for (let k = perDay.get(day).get(j).size; k < maxCol; k++) {
                                 var tdIn = document.createElement("td");
                                 tdIn.appendChild(document.createElement("br"));
                                 trIn.appendChild(tdIn);
-                                addedData = true;
                             }
-                            if (addedData) {
-                                tbodyIn.appendChild(trIn);
-                            }
+                            tbodyIn.appendChild(trIn);
                         }
 
                         tableIn.appendChild(tbodyIn);
@@ -297,12 +292,10 @@ async function timeTable() {
 
                         empty = false;
                         tr.appendChild(td);
-                        //continue? either way there should be no data that enters this case anymore
                     } else if (ov[0] < i && i < ov[0] + ov[1]) {
                         //do nothing as cell from above should fill it already
                         empty = false;
                         continue;
-                        //continue? either way there should be no data that enters this case anymore
                     }
                 }
             }
@@ -328,6 +321,7 @@ async function timeTable() {
         for (hours of entry.hours) {
             for (time of hours.time) {
                 if (!["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].includes(time.day)) {
+                    //only add data which is defined
                     var innerExtra = document.createElement("p");
                     innerExtra.textContent = entry.name + " " + entry.id + " " + hours.type;
                     if (hours.id != null) {
