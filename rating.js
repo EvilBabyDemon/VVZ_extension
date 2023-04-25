@@ -46,7 +46,7 @@ function addCourseReviewRating() {
                         r.appendChild(td);
                     }
                 } else {
-                    console.log("Error Code: " + xhr.status + " for index " + index);
+                    console.log("Error Code: " + xhr.status);
                 }
             }
         }
