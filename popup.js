@@ -6,7 +6,7 @@ async function handleToggleChange(event) {
     var all = storage == "all";
     var toggle = document.getElementById(storage).checked;
 
-    var cooki = await browser.cookies.get({
+    var cooki = await chrome.cookies.get({
         url: "https://www.vvz.ethz.ch",
         name: "popupExt"
     });
@@ -28,13 +28,13 @@ async function handleToggleChange(event) {
 }
 
 function setCookie(cookieMap) {
-    browser.cookies.set({
+    chrome.cookies.set({
         url: "https://www.vvz.ethz.ch",
         name: "popupExt",
         value: JSON.stringify(Array.from(cookieMap.entries())),
         expirationDate: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 365)
     });
-    browser.cookies.set({
+    chrome.cookies.set({
         url: "https://www.vorlesungen.ethz.ch",
         name: "popupExt",
         value: JSON.stringify(Array.from(cookieMap.entries())),
@@ -54,7 +54,7 @@ function setInitCookie(checks) {
 }
 async function main() {
 
-    var cooki = await browser.cookies.get({
+    var cooki = await chrome.cookies.get({
         url: "https://www.vvz.ethz.ch",
         name: "popupExt"
     });

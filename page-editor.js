@@ -1,6 +1,6 @@
 getCookie();
 async function getCookie() {
-    var cookieMap = browser.runtime.sendMessage({ data: window.location.hostname });
+    var cookieMap = chrome.runtime.sendMessage({ data: window.location.hostname });
     main(await cookieMap);
 }
 

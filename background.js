@@ -1,6 +1,6 @@
-browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     var cookieMap;
-    var cooki = await browser.cookies.get({
+    var cooki = await chrome.cookies.get({
         url: "https://" + message.data,
         name: "popupExt"
     });
