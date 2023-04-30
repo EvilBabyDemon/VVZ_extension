@@ -16,7 +16,6 @@
     "https://www.vorlesungen.ethz.ch/*"
   ],
   "background": {
-    "persistent": false,
     "service_worker": "background.js"
   },
   "icons": {
