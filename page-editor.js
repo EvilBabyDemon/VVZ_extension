@@ -1,6 +1,13 @@
+var browser;
+if (navigator.userAgent.includes("Firefox")) {
+    browser = browser;
+} else {
+    browser = chrome;
+}
+
 getCookie();
 function getCookie() {
-    chrome.runtime.sendMessage(window.location.hostname, function(response) {
+    browser.runtime.sendMessage(window.location.hostname, function(response) {
         var cookieMap;
         if (response != null) {
             cookieMap = new Map(JSON.parse(response.value))

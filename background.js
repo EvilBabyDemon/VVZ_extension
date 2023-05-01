@@ -1,7 +1,14 @@
-chrome.runtime.onMessage.addListener(handleMessage);
+var browser;
+if (navigator.userAgent.includes("Firefox")) {
+    browser = browser;
+} else {
+    browser = chrome;
+}
+
+browser.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(request, sender, sendResponse) {
-    chrome.cookies.get({
+    browser.cookies.get({
         url: "https://" + request,
         name: "popupExt"
     }, function (cookies) {
