@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "description": "Better user experience on vvz.ethz.ch Features: Keep Search, Timetable Creator, filter by grading, Ratings from CourseReview",
+  "name": "vvz-coursereview",
+  "version": "1.4.5",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://rubberducky.vsos.ethz.ch/*",
+    "https://www.vvz.ethz.ch/*",
+    "https://www.vorlesungen.ethz.ch/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "48": "icon_48.png",
+    "128": "icon_128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.vvz.ethz.ch/*",
+        "https://www.vorlesungen.ethz.ch/*"
+      ],
+      "js": [
+        "coursereview-links.js",
+        "rating.js",
+        "timetable.js",
+        "filter.js",
+        "autofill.js",
+        "page-editor.js"
+      ]
+    }
+  ]
+}
