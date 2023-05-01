@@ -15,10 +15,6 @@ function course_filter(session, end, semester, slow) {
     if (errdiv != null) {
         errdiv.remove();
     }
-    if (session && end && semester || !session && !end && !semester) {
-        return;
-    }
-
 
     const string = document.body.innerHTML;
     const res = [...string.matchAll(/<td><b><a href="(\/Vorlesungsverzeichnis\/lerneinheit.view\?lerneinheitId=\d+&amp;semkez=\d+[SW]&amp;).+?">.+?<\/a><\/b>/g)];
