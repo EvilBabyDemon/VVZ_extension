@@ -18,8 +18,9 @@
     "persistent": false
   },
   "icons": {
-    "48": "icon_48.png",
-    "128": "icon_128.png"
+    "48": "icon.svg",
+    "96": "icon.svg",
+    "128": "icon.svg"
   },
   "content_scripts": [
     {
