@@ -252,7 +252,8 @@ async function timeTable() {
                 for (ov of dayOv) {
                     if (ov[0] == i) {
                         //what is the width? / max courses overlap in the same time frame
-                        td.style = "padding: 0px; height: 100%;";
+                        var tdHeight = 70 * ov[1]+ov[1];
+                        td.style = "border: none; padding: 0px;";
                         td.rowSpan = ov[1];
 
                         var maxCol = 0;
@@ -263,7 +264,7 @@ async function timeTable() {
                         }
 
                         var tableIn = document.createElement("table");
-                        tableIn.style = "height: 100% !important; border:none; padding: 0px; margin: 0px; overflow:hidden;";
+                        tableIn.style = "height: " + (tdHeight) + "px !important; border:none; padding: 0px; margin: 0px; overflow:hidden;";
                         var tbodyIn = document.createElement("tbody");
 
                         for (let j = i; j < i + ov[1]; j++) {
@@ -275,13 +276,16 @@ async function timeTable() {
                                 var tdIn = document.createElement("td");
 
                                 tdIn.rowSpan = values[1][1];
-                                tdIn.style = "font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
+                                var tdInHeight = values[1][1]*100.0 / ov[1];
+                                tdIn.style = "height: " + tdInHeight + "%; font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
                                 tdIn.textContent = values[1][0];
                                 trIn.appendChild(tdIn);
                             }
                             for (let k = perDay.get(day).get(j).size; k < maxCol; k++) {
                                 var tdIn = document.createElement("td");
                                 tdIn.appendChild(document.createElement("br"));
+                                var tdInHeight = 100.0 / ov[1];
+                                tdIn.style = "height: " + tdInHeight + "%;background:#ffffff;";
                                 trIn.appendChild(tdIn);
                             }
                             tbodyIn.appendChild(trIn);

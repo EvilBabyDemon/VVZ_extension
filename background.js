@@ -1,11 +1,18 @@
-browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-    var cookieMap;
-    var cooki = await browser.cookies.get({
-        url: "https://" + message.data,
+var browser;
+if (navigator.userAgent.includes("Firefox")) {
+    browser = browser;
+} else {
+    browser = chrome;
+}
+
+browser.runtime.onMessage.addListener(handleMessage);
+
+function handleMessage(request, sender, sendResponse) {
+    browser.cookies.get({
+        url: "https://" + request,
         name: "popupExt"
+    }, function (cookies) {
+        sendResponse(cookies);
     });
-    if (cooki != null) {
-        cookieMap = new Map(JSON.parse(cooki.value))
-    }
-    return cookieMap;
-});
+    return true; 
+}

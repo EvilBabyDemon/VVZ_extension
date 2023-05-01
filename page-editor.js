@@ -1,7 +1,19 @@
+var browser;
+if (navigator.userAgent.includes("Firefox")) {
+    browser = browser;
+} else {
+    browser = chrome;
+}
+
 getCookie();
-async function getCookie() {
-    var cookieMap = browser.runtime.sendMessage({ data: window.location.hostname });
-    main(await cookieMap);
+function getCookie() {
+    browser.runtime.sendMessage(window.location.hostname, function(response) {
+        var cookieMap;
+        if (response != null) {
+            cookieMap = new Map(JSON.parse(response.value))
+        }
+        main(cookieMap);
+    });
 }
 
 function main(cookieMap) {
