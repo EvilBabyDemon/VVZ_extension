@@ -1,7 +1,12 @@
 getCookie();
-async function getCookie() {
-    var cookieMap = chrome.runtime.sendMessage({ data: window.location.hostname });
-    main(await cookieMap);
+function getCookie() {
+    chrome.runtime.sendMessage(window.location.hostname, function(response) {
+        var cookieMap;
+        if (response != null) {
+            cookieMap = new Map(JSON.parse(response.value))
+        }
+        main(cookieMap);
+    });
 }
 
 function main(cookieMap) {
