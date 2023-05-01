@@ -18,7 +18,7 @@ function saveState(event) {
     if (localStorage.autofiller && localStorage.autofiller == "false") {
         return;
     }
-    var storage = event.originalTarget.id + "Ext";
+    var storage = event.target.id + "Ext";
     var tar = event.currentTarget;
     localStorage.setItem(storage, tar.options[tar.selectedIndex].text);
 }

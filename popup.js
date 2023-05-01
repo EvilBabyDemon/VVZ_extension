@@ -2,7 +2,7 @@ var checks = ["all", "crlinks", "rating", "timetable", "autofill", "filter"];
 
 // Function to handle toggle change event
 async function handleToggleChange(event) {
-    var storage = event.originalTarget.id;
+    var storage = event.target.id;
     var all = storage == "all";
     var toggle = document.getElementById(storage).checked;
 
