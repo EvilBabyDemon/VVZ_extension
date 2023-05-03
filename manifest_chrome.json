@@ -7,7 +7,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab",
     "cookies"
   ],
   "host_permissions": [

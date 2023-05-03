@@ -7,7 +7,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab",
     "cookies",
     "https://rubberducky.vsos.ethz.ch/*",
     "https://www.vvz.ethz.ch/*",
