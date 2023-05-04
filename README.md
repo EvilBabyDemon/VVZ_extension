@@ -19,3 +19,9 @@ You can also see Star ratings from CourseReview right while browsing VVZ.
 
 ## Known Issues:  
 This extension makes extra requests to vvz to filter and keep the structure. This can lead fast to 403s. So you shouldn't spam use the features if you would like to use them.
+
+# Available at
+Firefox:  
+https://addons.mozilla.org/en-GB/firefox/addon/vvz-coursereview/  
+Chrome:  
+https://chrome.google.com/webstore/detail/vvz-coursereview/pjgjdmehkhpdhlpdgfbbpgekfajlhhgn
