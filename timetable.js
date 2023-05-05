@@ -48,9 +48,24 @@ function createTimeTable() {
     button.textContent = "Create Timetable";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
     button.onclick = function () {
+        try {
+            document.getElementById("waitTimetable").style.display = "inline";
+        } catch (ex) {
+        }    
         timeTable();
     };
+
+    var img = document.createElement("img");
+    img.src = "images/wait.gif";
+    img.id = "waitTimetable";
+    img.style.display = "none";
+    img.alt = "Loading timetable";
+    img.width = "16";
+    img.height = "16";
+        
     document.getElementById("customreview").appendChild(button);
+    document.getElementById("customreview").appendChild(img);
+    document.getElementById("customreview").appendChild(document.createElement('br'));
     document.getElementById("customreview").appendChild(document.createElement('br'));
 
 }
@@ -130,7 +145,7 @@ async function timeTable() {
             htmls.push(unitHTML);
             console.log(`${url}${r}`);
             console.log(unitReq.status);
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
         }
     }
 
@@ -151,7 +166,6 @@ async function timeTable() {
     }
     table.className = "classlist";
     table.style = "width: 100%;";
-    document.getElementById("customreview").appendChild(table);
     var tbody = document.createElement("tbody");
     var trh = document.createElement("tr");
     var thf = document.createElement("th");
@@ -319,6 +333,12 @@ async function timeTable() {
 
     //write non weekly lectures below timetable
     var extraText = document.createElement("div");
+    if (document.getElementById("nonWeekly") != null) {
+        extraText = document.getElementById("nonWeekly");
+        extraText.innerHTML = "";
+    } else {
+        extraText.id = "nonWeekly";
+    }
     extraText.textContent = "Non weekly lectures:";
 
     for (entry of dataset) {
@@ -345,4 +365,8 @@ async function timeTable() {
         }
     }
     document.getElementById("customreview").appendChild(extraText);
+    try {
+        document.getElementById("waitTimetable").style.display = "none";
+    } catch (ex) {
+    }    
 }
