@@ -49,7 +49,7 @@ async function keepField(id, waitField) {
                 child.selected = true;
                 if (waitField != "") {
                     showWait(waitField);
-                    await new Promise(r => setTimeout(r, 300));
+                    await new Promise(r => setTimeout(r, 350));
                     autoSubmit('sucheLehrangebot');
                 }
                 return true;
