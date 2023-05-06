@@ -44,10 +44,12 @@ function createTimeTable() {
     }
 
     var button = document.createElement('button');
+    button.id = "createTimetable";
     button.type = "submit";
     button.textContent = "Create Timetable";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
     button.onclick = function () {
+        document.getElementById("createTimetable").disabled = true;
         try {
             document.getElementById("waitTimetable").style.display = "inline";
         } catch (ex) {
@@ -368,5 +370,6 @@ async function timeTable() {
     try {
         document.getElementById("waitTimetable").style.display = "none";
     } catch (ex) {
-    }    
+    }
+    document.getElementById("createTimetable").disabled = false;
 }
