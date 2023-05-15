@@ -7,7 +7,7 @@ if (navigator.userAgent.includes("Firefox")) {
 
 getCookie();
 function getCookie() {
-    browser.runtime.sendMessage(window.location.hostname, function(response) {
+    browser.runtime.sendMessage(window.location.hostname, function (response) {
         var cookieMap;
         if (response != null) {
             cookieMap = new Map(JSON.parse(response.value))
@@ -15,14 +15,26 @@ function getCookie() {
         main(cookieMap);
     });
 }
+async function reload() {
+    await new Promise(r => setTimeout(r, 300))
+    location.reload();
+}
 
 function main(cookieMap) {
     if (cookieMap != null && !cookieMap.get("all")) {
         return;
     }
 
-    // search results
-    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") && document.getElementById("customereview") == null) {
+    if (document.getElementsByTagName("h1").length != 0 && document.getElementsByTagName("h1")[0].textContent == "Forbidden") {
+        reload();
+    }
+
+    // search results (view? normal, do? GESS)
+    // view, wasn't changed already, doesnt have error -> still in selection
+    if ((window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") ||
+        window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.do?")) &&
+        document.getElementById("customereview") == null &&
+        document.getElementsByClassName("error").length == 0) {
         addCustomDiv();
         if (cookieMap == null || cookieMap.get("filter")) {
             addCheckbox("sessionexam", "Session examination");
@@ -40,7 +52,11 @@ function main(cookieMap) {
     }
 
     // search selection
-    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view")) {
+    // pre.view or view with error
+    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view") ||
+        window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") &&
+        document.getElementsByClassName("error").length != 0) {
+
         addCustomDiv();
 
         addClearButton("Clear all LocalStorage", function () { localStorage.clear(); });
