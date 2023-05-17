@@ -1,3 +1,52 @@
+function addCheckboxTable(id, name, table, remove) {
+    // Create the checkbox element
+    var tr = document.createElement('tr');
+    var tdstyle = "padding: 2px 9px 1px 0px; border: none; width: auto; font-weight: inherit; font-size: inherit; color: inherit;";
+    var tdInput = document.createElement('td');
+    tdInput.style = tdstyle;
+    var tdButton = document.createElement('td');
+    tdButton.style = tdstyle;
+    var checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
+    checkbox.id = id;
+    checkbox.name = name;
+    if (remove == null) {
+        checkbox.checked = true;
+    } else {
+        checkbox.checked = remove;
+    }
+
+    // Create a label for the checkbox
+    var label = document.createElement('label');
+    label.htmlFor = id;
+    label.appendChild(document.createTextNode(name));
+
+    // Append the checkbox and label to the webpage
+    var button = document.createElement('button');
+    button.type = "submit";
+    button.textContent = "🗑";
+    button.style = "color: #f00; background: none; border: none; border-radius: 0; padding: 5px 5px 5px 5px;";
+    button.onclick = function () {
+        //id is of format lerneinheitId=168203&semkez=2023S
+        var courseMap = new Map();
+        if (localStorage.courses) {
+            courseMap = new Map(JSON.parse(localStorage.courses));
+        }
+        courseMap.delete(id);
+        localStorage.courses = JSON.stringify(Array.from(courseMap.entries()));
+        location.reload();
+    };
+    tdInput.appendChild(checkbox);
+    tdInput.appendChild(label);
+    if (remove == null || remove) {
+        tdButton.appendChild(button);
+    }
+    tr.appendChild(tdInput);
+    tr.appendChild(tdButton);
+    table.appendChild(tr);
+}
+
+
 function addCourseSelector() {
     var trs = document.querySelectorAll("tr");
     trs.forEach(r => {
@@ -36,24 +85,39 @@ function saveCourse(id, courseName) {
 function createTimeTable() {
     document.getElementById("customreview").appendChild(document.createElement('br'));
     if (localStorage.courses) {
+        var tableCourses = document.createElement('table');
+        tableCourses.style = "border: none; width: auto;";
         var courseMap = new Map(JSON.parse(localStorage.courses))
         for (course of courseMap) {
-            addCheckbox(course[0], course[1]);
+            addCheckboxTable(course[0], course[1], tableCourses);
         }
-        addCheckbox("showAllExt", "Show all Exercise sessions etc.", false);
+        addCheckboxTable("showAllExt", "Show all Exercise sessions etc.", tableCourses, false);
+
+        document.getElementById("customreview").appendChild(tableCourses);
     }
 
-    var button = document.createElement('button');
-    button.id = "createTimetable";
-    button.type = "submit";
-    button.textContent = "Create Timetable";
-    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
-    button.onclick = function () {
+    var formButtons = document.createElement('div');
+    formButtons.className = "formButtons";
+    var left = document.createElement('div');
+    left.className = "left";
+    formButtons.appendChild(left);
+    var right = document.createElement('div');
+    right.className = "right";
+    formButtons.appendChild(right);
+
+    var create = document.createElement('button');
+    create.type = "submit";
+    create.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    var remove = create.cloneNode(false);
+
+    create.id = "createTimetable";
+    create.textContent = "Create Timetable";
+    create.onclick = function () {
         document.getElementById("createTimetable").disabled = true;
         try {
             document.getElementById("waitTimetable").style.display = "inline";
         } catch (ex) {
-        }    
+        }
         timeTable();
     };
 
@@ -64,10 +128,16 @@ function createTimeTable() {
     img.alt = "Loading timetable";
     img.width = "16";
     img.height = "16";
-        
-    document.getElementById("customreview").appendChild(button);
-    document.getElementById("customreview").appendChild(img);
-    document.getElementById("customreview").appendChild(document.createElement('br'));
+
+    left.appendChild(create);
+    left.appendChild(img);
+
+    remove.textContent = "Remove all Courses";
+    remove.onclick = function () { localStorage.removeItem("courses"); location.reload(); };
+
+    right.appendChild(remove);
+
+    document.getElementById("customreview").appendChild(formButtons);
     document.getElementById("customreview").appendChild(document.createElement('br'));
 
 }
@@ -161,9 +231,9 @@ async function timeTable() {
 
     //Create html table 
     var table = document.createElement("table");
-    var customrev = document.getElementById("customreview");
-    if (customrev.getElementsByTagName("table").length != 0) {
-        table = customrev.getElementsByTagName("table")[0];
+    table.id = "timetable";
+    if (document.getElementById("timetable") != null) {
+        table = document.getElementById("timetable");
         table.innerHTML = "";
     }
     table.className = "classlist";
@@ -268,7 +338,7 @@ async function timeTable() {
                 for (ov of dayOv) {
                     if (ov[0] == i) {
                         //what is the width? / max courses overlap in the same time frame
-                        var tdHeight = 70 * ov[1]+ov[1];
+                        var tdHeight = 70 * ov[1] + ov[1];
                         td.style = "border: none; padding: 0px;";
                         td.rowSpan = ov[1];
 
@@ -292,7 +362,7 @@ async function timeTable() {
                                 var tdIn = document.createElement("td");
 
                                 tdIn.rowSpan = values[1][1];
-                                var tdInHeight = values[1][1]*100.0 / ov[1];
+                                var tdInHeight = values[1][1] * 100.0 / ov[1];
                                 tdIn.style = "height: " + tdInHeight + "%; font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
                                 tdIn.textContent = values[1][0];
                                 trIn.appendChild(tdIn);
