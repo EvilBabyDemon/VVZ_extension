@@ -81,7 +81,7 @@ async function keepSearch() {
     keepField("unterbereichAbschnittId", "");
 }
 
-function addCheckboxAutofill() {
+function addCheckboxAutofill(parent) {
     var id = "autofiller";
     var checkname = "autofiller Structure";
     var checkbox = document.createElement('input');
@@ -105,7 +105,7 @@ function addCheckboxAutofill() {
     label.appendChild(document.createTextNode(checkname));
 
     // Append the checkbox and label to the webpage
-    document.getElementById("customreview").appendChild(checkbox);
-    document.getElementById("customreview").appendChild(label);
-    document.getElementById("customreview").appendChild(document.createElement('br'));
+    parent.appendChild(checkbox);
+    parent.appendChild(label);
+    parent.appendChild(document.createElement('br'));
 }

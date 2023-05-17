@@ -59,21 +59,30 @@ function main(cookieMap) {
 
         addCustomDiv();
 
-        addClearButton("Clear all LocalStorage", function () { localStorage.clear(); });
+        var formButtons = document.createElement('div');
+        formButtons.className = "formButtons";
+        var left = document.createElement('div');
+        left.className = "left";
+        formButtons.appendChild(left);
+        var right = document.createElement('div');
+        right.className = "right";
+        formButtons.appendChild(right);
+        document.getElementById("customreview").appendChild(formButtons);
+
+        addButtonWithFunc("Clear all LocalStorage", function () { localStorage.clear(); location.reload(); }, right);
         if (cookieMap == null || cookieMap.get("autofill")) {
-            addCheckboxAutofill();
-            addClearButton("Clear Search", function () {
+            addCheckboxAutofill(left);
+            addButtonWithFunc("Clear Search", function () {
                 localStorage.removeItem("studiengangTypExt");
                 localStorage.removeItem("deptIdExt");
                 localStorage.removeItem("studiengangAbschnittIdExt");
                 localStorage.removeItem("bereichAbschnittIdExt");
                 localStorage.removeItem("unterbereichAbschnittIdExt");
-            });
+            }, left);
             keepSearch();
         }
         if (cookieMap == null || cookieMap.get("timetable")) {
             createTimeTable();
-            addClearButton("Clear Courses", function () { localStorage.removeItem("courses"); });
         }
     }
 
@@ -86,18 +95,22 @@ function main(cookieMap) {
 function addCustomDiv() {
     var div = document.createElement('div');
     div.id = "customreview";
-    div.style = "margin-left: 1.5%;";
+    div.style = "margin-left: 1.5%; margin-right:1.5%";
     document.getElementById("contentTop").appendChild(div);
 }
 
-function addClearButton(text, func) {
+function addButtonWithFunc(text, func, parent) {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = text;
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
     button.onclick = func;
-    document.getElementById("customreview").appendChild(button);
-    document.getElementById("customreview").appendChild(document.createElement('br'));
+    if (parent == null) {
+        document.getElementById("customreview").appendChild(button);
+        document.getElementById("customreview").appendChild(document.createElement('br'));
+    } else {
+        parent.appendChild(button);
+    }
 }
 
 function addCheckbox(id, name, checked) {
