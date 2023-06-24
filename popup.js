@@ -4,8 +4,9 @@ if (navigator.userAgent.includes("Firefox")) {
 } else {
     browser = chrome;
 }
-
-var checks = ["all", "crlinks", "rating", "timetable", "autofill", "filter"];
+var extra = ["hovercourse", "hoverlearnmat", "hovergroups", "hoverrestrict", "hoveroffered"];
+var checks = ["all", "crlinks", "rating", "timetable", "autofill", "filter", "hover", "hovercatdata", "hoverperform"];
+checks = checks.concat(extra);
 
 // Function to handle toggle change event
 async function handleToggleChange(event) {
@@ -49,10 +50,14 @@ function setCookie(cookieMap) {
     });
 }
 
-function setInitCookie(checks) {
+function setInitCookie() {
     var cookieMap = new Map();
     for (id of checks) {
-        cookieMap.set(id, true);
+        if (extra.includes(id)) {
+            cookieMap.set(id, false);
+        } else {
+            cookieMap.set(id, true);
+        }
     }
 
     setCookie(cookieMap);
@@ -69,7 +74,7 @@ async function main() {
     if (cooki != null) {
         cookieMap = new Map(JSON.parse(cooki.value))
     } else {
-        cookieMap = setInitCookie(checks);
+        cookieMap = setInitCookie();
     }
 
     for (id of checks) {

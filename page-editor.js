@@ -49,6 +49,9 @@ function main(cookieMap) {
         if (cookieMap == null || cookieMap.get("timetable")) {
             addCourseSelector();
         }
+        if (cookieMap == null || cookieMap.get("hover")) {
+            addToolTipHover(cookieMap);
+        }
     }
 
     // search selection

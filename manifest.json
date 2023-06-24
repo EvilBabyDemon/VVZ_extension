@@ -33,6 +33,7 @@
         "timetable.js",
         "filter.js",
         "autofill.js",
+        "show_more_info.js",
         "page-editor.js"
       ]
     }
