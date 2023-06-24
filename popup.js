@@ -53,7 +53,7 @@ function setCookie(cookieMap) {
 function setInitCookie(cookieMap) {
     var change = false;
     for (id of checks) {
-        if (cookieMap != null && cookieMap.get() != null) {
+        if (cookieMap != null && cookieMap.get(id) != null) {
             continue;
         }
         change = true;
@@ -63,7 +63,7 @@ function setInitCookie(cookieMap) {
             cookieMap.set(id, true);
         }
     }
-    
+
     if (change) {
         setCookie(cookieMap);
     }
@@ -79,7 +79,7 @@ async function main() {
     var cookieMap = new Map();
     if (cooki != null) {
         cookieMap = new Map(JSON.parse(cooki.value))
-    } 
+    }
     cookieMap = setInitCookie(cookieMap);
 
     for (id of checks) {
