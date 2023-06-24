@@ -50,17 +50,23 @@ function setCookie(cookieMap) {
     });
 }
 
-function setInitCookie() {
-    var cookieMap = new Map();
+function setInitCookie(cookieMap) {
+    var change = false;
     for (id of checks) {
+        if (cookieMap != null && cookieMap.get() != null) {
+            continue;
+        }
+        change = true;
         if (extra.includes(id)) {
             cookieMap.set(id, false);
         } else {
             cookieMap.set(id, true);
         }
     }
-
-    setCookie(cookieMap);
+    
+    if (change) {
+        setCookie(cookieMap);
+    }
 
     return cookieMap;
 }
@@ -70,12 +76,11 @@ async function main() {
         url: "https://www.vvz.ethz.ch",
         name: "popupExt"
     });
-    var cookieMap;
+    var cookieMap = new Map();
     if (cooki != null) {
         cookieMap = new Map(JSON.parse(cooki.value))
-    } else {
-        cookieMap = setInitCookie();
-    }
+    } 
+    cookieMap = setInitCookie(cookieMap);
 
     for (id of checks) {
         document.getElementById(id).checked = cookieMap.get(id);
