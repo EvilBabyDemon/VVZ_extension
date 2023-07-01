@@ -1,3 +1,43 @@
+let coursesLocalStorage = "courses";
+let coursesECTSLocalStorage = "coursesECTS";
+
+function getFromLocal(storageId) {
+    var map = new Map();
+    if (localStorage.getItem(storageId)) {
+        map = new Map(JSON.parse(localStorage.getItem(storageId)));
+    }
+    return map;
+}
+
+function setLocal(storageId, map) {
+    localStorage.setItem(storageId, JSON.stringify(Array.from(map.entries())));
+}
+
+function deleteEntry(id) {
+    //id is of format lerneinheitId=168203&semkez=2023S
+    if (localStorage.getItem(coursesLocalStorage)) {
+        var courseMap = getFromLocal(coursesLocalStorage);
+        courseMap.delete(id);
+        setLocal(coursesLocalStorage, courseMap);
+    }
+    if (localStorage.getItem(coursesECTSLocalStorage)) {
+        var ectsMap = getFromLocal(coursesECTSLocalStorage);
+        ectsMap.delete(id);
+        setLocal(coursesECTSLocalStorage, ectsMap);
+    }
+}
+
+function saveCourse(id, courseName, ects) {
+    //id is of format lerneinheitId=168203&semkez=2023S
+    var courseMap = getFromLocal(coursesLocalStorage);
+    courseMap.set(id, courseName);
+    setLocal(coursesLocalStorage, courseMap);
+
+    var ectsMap = getFromLocal(coursesECTSLocalStorage);
+    ectsMap.set(id, ects);
+    setLocal(coursesECTSLocalStorage, ectsMap);
+}
+
 function addCheckboxTable(id, name, table, remove) {
     // Create the checkbox element
     var tr = document.createElement('tr');
@@ -28,12 +68,7 @@ function addCheckboxTable(id, name, table, remove) {
     button.style = "color: #f00; background: none; border: none; border-radius: 0; padding: 5px 5px 5px 5px;";
     button.onclick = function () {
         //id is of format lerneinheitId=168203&semkez=2023S
-        var courseMap = new Map();
-        if (localStorage.courses) {
-            courseMap = new Map(JSON.parse(localStorage.courses));
-        }
-        courseMap.delete(id);
-        localStorage.courses = JSON.stringify(Array.from(courseMap.entries()));
+        deleteEntry(id);
         location.reload();
     };
     tdInput.appendChild(checkbox);
@@ -51,43 +86,35 @@ function addCourseSelector() {
     var trs = document.querySelectorAll("tr");
     trs.forEach(r => {
         var tds = r.getElementsByTagName("td");
-        if (tds.length > 1 && tds[0].className == "border-no") {
+        if (tds.length > 3 && tds[0].className == "border-no") {
             var url = tds[1].getElementsByTagName("A")[0];
+            var ects = parseInt(tds[3].textContent.replace("KP", "").trim());
             var match = url.href.match(/lerneinheitId=\d+&semkez=\d+[SW]/);
-            addTimeButton(tds[0], match[0], url.textContent);
+            addTimeButton(tds[0], match[0], url.textContent, ects);
         }
     });
 }
 
 
-function addTimeButton(tr_elem, id, courseName) {
+function addTimeButton(tr_elem, id, courseName, ects) {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = "add to timetable";
     button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
     button.onclick = function () {
-        saveCourse(id, courseName);
+        saveCourse(id, courseName, ects);
     };
     tr_elem.appendChild(button);
 }
 
-function saveCourse(id, courseName) {
-    //id is of format lerneinheitId=168203&semkez=2023S
-    var courseMap = new Map();
-    if (localStorage.courses) {
-        courseMap = new Map(JSON.parse(localStorage.courses));
-    }
-    courseMap.set(id, courseName);
-    localStorage.courses = JSON.stringify(Array.from(courseMap.entries()));
-}
 
 
-function createTimeTable() {
+async function createTimeTable() {
     document.getElementById("customreview").appendChild(document.createElement('br'));
-    if (localStorage.courses) {
+    if (localStorage.getItem(coursesLocalStorage)) {
         var tableCourses = document.createElement('table');
         tableCourses.style = "border: none; width: auto;";
-        var courseMap = new Map(JSON.parse(localStorage.courses))
+        var courseMap = getFromLocal(coursesLocalStorage);
         for (course of courseMap) {
             addCheckboxTable(course[0], course[1], tableCourses);
         }
@@ -131,6 +158,33 @@ function createTimeTable() {
 
     left.appendChild(create);
     left.appendChild(img);
+    var ectsMap = getFromLocal(coursesECTSLocalStorage);
+    var courseMap = getFromLocal(coursesLocalStorage);
+    
+    if (courseMap.size > 0) { //TODO: remove code in 5 versions
+        var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+        for (const key of courseMap.keys()) {
+            if (!ectsMap.get(key)) {
+                let unitReq = await fetch(`${url}/lerneinheit.view?ansicht=LEISTUNGSKONTROLLE&${key}`);
+                let unitHTML = await unitReq.text();
+                const dom = new DOMParser().parseFromString(unitHTML.replace(/&nbsp;/g, " "), "text/html");
+                let tabel = dom.getElementsByTagName("table")[1];
+                var trEcts = tabel.getElementsByTagName("tr")[2];
+                var tdEcts = trEcts.getElementsByTagName("td")[1];
+                var ects = parseInt(tdEcts.textContent.replace("KP", "").trim());
+                ectsMap.set(key, ects);
+                setLocal(coursesECTSLocalStorage, ectsMap);
+            }
+        }
+    }
+
+    if (ectsMap.size > 0) {
+        var ectsSum = 0;
+        for (const key of ectsMap.keys()) {
+            ectsSum += ectsMap.get(key);
+        }
+        left.append(" ECTS: " + ectsSum);
+    }
 
     remove.textContent = "Remove all Courses";
     remove.onclick = function () { localStorage.removeItem("courses"); location.reload(); };
@@ -201,11 +255,11 @@ async function timeTable() {
         };
     }
 
-    if (!localStorage.courses) {
+    if (!localStorage.getItem(coursesLocalStorage)) {
         return;
     }
 
-    var courseRows = new Map(JSON.parse(localStorage.courses));
+    var courseRows = getFromLocal(coursesLocalStorage);
     let htmls = [];
 
     var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
@@ -260,7 +314,7 @@ async function timeTable() {
         for (let i = 8; i < 20; i++) {
             var currHour = new Map();
             for (let j = 0; j < dataset.length; j++) {
-                var entry = dataset[j]
+                var entry = dataset[j];
                 for (hours of entry.hours) {
                     for (time of hours.time) {
                         if (time.day == day && time.start <= i && i < time.end) {
@@ -297,7 +351,7 @@ async function timeTable() {
             //invariant:
             // there is no course that started before i and is still going at i 
             redo: for (let j = 0; j < dataset.length; j++) {
-                var entry = dataset[j]
+                var entry = dataset[j];
                 for (hours of entry.hours) {
                     for (time of hours.time) {
                         if (time.day != day) {
@@ -318,7 +372,7 @@ async function timeTable() {
                 continue;
             }
             overlaps.set(i, maxT - minT);
-            i = maxT
+            i = maxT;
         }
         allOverlaps.set(day, overlaps);
     }
