@@ -107,7 +107,6 @@ function addPopOut(event, content) {
             url = url + "ansicht=STUDPLANINFO&" + lang;
         }
 
-        console.log(url);
         xhr.open("GET", url);
         xhr.send();
         xhr.onerror = function () {
