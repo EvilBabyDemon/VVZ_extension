@@ -1,0 +1,22 @@
+#!/bin/bash
+
+firefox="ff.zip"
+chrome="chrome.zip"
+
+if test -f "$firefox"; then
+    rm $firefox
+fi
+if test -f "$chrome"; then
+    rm $chrome
+fi
+
+
+zip -q -r "$firefox" . -x "manifest_chrome.json" "zipExt" "*.zip" "ToDo.md" ".git/*" ".gitignore"
+
+
+zip -q -r "$chrome" . -x "manifest.json" "zipExt" "*.zip" "ToDo.md" ".git/*" ".gitignore"
+unzip -q $chrome -d temp_folder
+mv temp_folder/manifest_chrome.json temp_folder/manifest.json
+rm $chrome
+zip -j -q -r $chrome temp_folder/
+rm -r temp_folder
