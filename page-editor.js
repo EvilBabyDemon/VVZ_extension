@@ -10,13 +10,13 @@ function getCookie() {
     browser.runtime.sendMessage(window.location.hostname, function (response) {
         var cookieMap;
         if (response != null) {
-            cookieMap = new Map(JSON.parse(response.value))
+            cookieMap = new Map(JSON.parse(response.value));
         }
         main(cookieMap);
     });
 }
 async function reload() {
-    await new Promise(r => setTimeout(r, 300))
+    await new Promise(r => setTimeout(r, 300));
     location.reload();
 }
 
