@@ -13,7 +13,9 @@ Whenever you switch semester vvz removes any selections you already made under S
 While searching you can filter for Session examination, End of semester examination and (un)graded Semester performance.
 
 ### Easier Search:
-Have all the information you want in the search results instead of having to click through each course.
+Just press enter in the search menu instead of having to click the search the button.
+Have all the information you want in the search results instead of having to click through each course.  
+All old versions of a course can be quickly found.
 
 ### CourseReview:  
 Replaces all course_ids with links to https://n.ethz.ch/~lteufelbe/coursereview/course/course_id/ to easily check out reviews of a course.  
