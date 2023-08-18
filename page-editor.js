@@ -60,6 +60,24 @@ function main(cookieMap) {
         window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") &&
         document.getElementsByClassName("error").length != 0) {
 
+        if (cookieMap != null || cookieMap.get("enter")) {
+            document.addEventListener(
+                "keydown",
+                (event) => {
+                    console.log("key press");
+                    if (event.defaultPrevented) {
+                        return; // Do nothing if the event was already processed
+                    }
+                    if (event.key == "Enter") {
+                        document.getElementById("sucheLehrangebot").submit();
+                        // Cancel the default action to avoid it being handled twice
+                        event.preventDefault();
+                    }
+                },
+                true,
+            );
+        }
+
         addCustomDiv();
 
         var formButtons = document.createElement('div');

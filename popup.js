@@ -5,7 +5,7 @@ if (navigator.userAgent.includes("Firefox")) {
     browser = chrome;
 }
 var extra = ["hovercourse", "hoverlearnmat", "hovergroups", "hoverrestrict", "hoveroffered"];
-var checks = ["all", "crlinks", "rating", "timetable", "autofill", "filter", "hover", "hovercatdata", "hoverperform"];
+var checks = ["all", "crlinks", "rating", "timetable", "autofill", "filter", "hover", "hovercatdata", "hoverperform", "enter"];
 checks = checks.concat(extra);
 
 // Function to handle toggle change event
