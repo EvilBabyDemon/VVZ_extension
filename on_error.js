@@ -4,7 +4,7 @@ async function on_error() {
         var oldURL = document.referrer;
         //only go back if vvz or vorlesungen
         if (oldURL.includes("vvz.ethz.ch") || oldURL.includes("vorlesungen.ethz.ch")) {
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 1000));
             window.history.back();
         }
     }
