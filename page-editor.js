@@ -107,6 +107,15 @@ function main(cookieMap) {
         }
     }
 
+    //lerneinheitview
+    //meaning on course page
+    if (window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?")) {
+        if (cookieMap == null || cookieMap.get("old")) {
+            showOldOccurences();
+        }
+    }
+
+
     if (cookieMap == null || cookieMap.get("crlinks")) {
         var all = document.body.querySelectorAll("*");
         recAddUrls(all);
