@@ -60,7 +60,7 @@ function main(cookieMap) {
         window.location.href.includes(".ethz.ch/Vorlesungsverzeichnis/sucheLehrangebot.view?") &&
         document.getElementsByClassName("error").length != 0) {
 
-        if (cookieMap != null || cookieMap.get("enter")) {
+        if (cookieMap == null || cookieMap.get("enter")) {
             document.addEventListener(
                 "keydown",
                 (event) => {
