@@ -187,7 +187,11 @@ async function createTimeTable() {
     }
 
     remove.textContent = "Remove all Courses";
-    remove.onclick = function () { localStorage.removeItem("courses"); location.reload(); };
+    remove.onclick = function () {
+        localStorage.removeItem(coursesLocalStorage);
+        localStorage.removeItem(coursesECTSLocalStorage);
+        location.reload();
+    };
 
     right.appendChild(remove);
 
