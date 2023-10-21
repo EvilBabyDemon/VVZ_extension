@@ -7,53 +7,116 @@
 </head>
 <style>
     body {
-        width: 330px;
+        width: 500px;
     }
 </style>
 
 <body>
     <h2>Turn off/on</h2>
     Entire Extension:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext" style="bottom: -60px">Turning this off will turn of any feature of the extension. Good to have a fast way to see VVZ again as it is or if the extension suddenly breaks.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="all" class="toggle-checkbox">
         <label for="all" class="toggle-label"></label>
     </div>
     Adding CourseReview links:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">Any CourseId (e.g. 252-0341-01L) on VVZ will be changed to link to their respective CourseReview page.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="crlinks" class="toggle-checkbox">
         <label for="crlinks" class="toggle-label"></label>
     </div>
-    Adding ratings when searching for links:
+    Adding ratings when searching for courses:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">On the search page it will add the ratings from CourseReview in the table.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="rating" class="toggle-checkbox">
         <label for="rating" class="toggle-label"></label>
     </div>
     Everything for timetable creator:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">Timetable creator is a feature that lets you save courses during search and on the mainpage you then see the amount of ECTS and you can create the timetable with exercise sessions and lectures.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="timetable" class="toggle-checkbox">
         <label for="timetable" class="toggle-label"></label>
     </div>
     Autofill in search menu:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">This autofills the main search fields with the last entereed search. Makes it easier to look at different semesters and when you come back to VVZ after some time.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="autofill" class="toggle-checkbox">
         <label for="autofill" class="toggle-label"></label>
     </div>
     Filter when searching:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">This let's you filter for the performance assesment (session exam, end of semester exam and (un)graded semesterperformance) while searching.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="filter" class="toggle-checkbox">
         <label for="filter" class="toggle-label"></label>
     </div>
     Searching by pressing enter:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">In the search menu you can simply press enter anywhere and it will send the search.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="enter" class="toggle-checkbox">
         <label for="enter" class="toggle-label"></label>
     </div>
     Show old occurences of each course:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">While on a course page it will query old occurences of that course (by course id) and will link them at the bottom of the page.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="old" class="toggle-checkbox">
         <label for="old" class="toggle-label"></label>
     </div>
-    Information on hover in search menu:
+    Information on hover in search results:
+    <div class="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        </svg>
+        <span class="tooltiptext">This will add fields to the search list, where you can get the information of the courses page right in the search list to quickly look over them.</span>
+    </div>
     <div class="toggle-container">
         <input type="checkbox" id="hover" class="toggle-checkbox">
         <label for="hover" class="toggle-label"></label>
