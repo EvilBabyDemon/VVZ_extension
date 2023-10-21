@@ -64,7 +64,6 @@ function main(cookieMap) {
             document.addEventListener(
                 "keydown",
                 (event) => {
-                    console.log("key press");
                     if (event.defaultPrevented) {
                         return; // Do nothing if the event was already processed
                     }
