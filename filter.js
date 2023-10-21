@@ -29,11 +29,11 @@ function course_filter(session, end, semester, slow) {
             trsf[index].hidden = !session;
             return;
         }
-        if (trsf[index].classList.contains("benotete-Semesterleistung")) {
+        if (trsf[index].classList.contains("Semesterendprüfung")) {
             trsf[index].hidden = !end;
             return;
         }
-        if (trsf[index].classList.contains("Sessionsprüfung")) {
+        if (trsf[index].classList.contains("benotete-Semesterleistung")) {
             trsf[index].hidden = !semester;
             return;
         }
@@ -60,7 +60,7 @@ function course_filter(session, end, semester, slow) {
                     examtype = "benotete-Semesterleistung";
                 }
                 trsf[index].classList.add(examtype);
-                if (!session && examtype == "Sessionsprüfung" || !end && examtype == "Semesterendprüfung" || !semester && examtype.endsWith("benotete Semesterleistung")) {
+                if (!session && examtype == "Sessionsprüfung" || !end && examtype == "Semesterendprüfung" || !semester && examtype == "benotete-Semesterleistung") {
                     trsf[index].hidden = true;
                 }
             } else if (xhr.status == 403) {
