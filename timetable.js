@@ -160,7 +160,7 @@ async function createTimeTable() {
     left.appendChild(img);
     var ectsMap = getFromLocal(coursesECTSLocalStorage);
     var courseMap = getFromLocal(coursesLocalStorage);
-    
+
     if (courseMap.size > 0) { //TODO: remove code in 5 versions
         var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
         for (const key of courseMap.keys()) {
@@ -328,11 +328,15 @@ async function timeTable() {
                             var text = hours.type + " " + entry.name;
                             if (showAll) {
                                 timeId = timeId + " " + time.room;
-                                text = text + " " + time.room;
                             }
 
                             if (currHour.get(timeId) == null) {
-                                currHour.set(timeId, [text, time.end - time.start, time.start == i]);
+                                currHour.set(timeId, [text, time.end - time.start, time.start == i, time.room]);
+                            } else {
+                                //set room to null as there is more than one
+                                var temp = currHour.get(timeId);
+                                temp[3] = null;
+                                currHour.set(timeId, temp);
                             }
                         }
                     }
@@ -422,7 +426,7 @@ async function timeTable() {
                                 tdIn.rowSpan = values[1][1];
                                 var tdInHeight = values[1][1] * 100.0 / ov[1];
                                 tdIn.style = "height: " + tdInHeight + "%; font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
-                                tdIn.textContent = values[1][0];
+                                tdIn.textContent = values[1][0] + " " + (values[1][3] != null ? values[1][3] : "");
                                 trIn.appendChild(tdIn);
                             }
                             for (let k = perDay.get(day).get(j).size; k < maxCol; k++) {
