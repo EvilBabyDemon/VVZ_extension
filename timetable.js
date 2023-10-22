@@ -65,7 +65,7 @@ function addCheckboxTable(id, name, table, remove) {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = "🗑";
-    button.style = "color: #f00; background: none; border: none; border-radius: 0; padding: 5px 5px 5px 5px;";
+    button.style = "color: #f00; background: none; border: none; border-radius: 0; padding: 5px;";
     button.onclick = function () {
         //id is of format lerneinheitId=168203&semkez=2023S
         deleteEntry(id);
@@ -111,7 +111,7 @@ function addTimeButton(tr_elem, id, courseName, ects) {
 
 async function createTimeTable() {
     document.getElementById("customreview").appendChild(document.createElement('br'));
-    if (localStorage.getItem(coursesLocalStorage)) {
+    if (getFromLocal(coursesLocalStorage).size > 0) {
         var tableCourses = document.createElement('table');
         tableCourses.style = "border: none; width: auto;";
         var courseMap = getFromLocal(coursesLocalStorage);
@@ -119,8 +119,27 @@ async function createTimeTable() {
             addCheckboxTable(course[0], course[1], tableCourses);
         }
         addCheckboxTable("showAllExt", "Show all Exercise sessions etc.", tableCourses, false);
-
+        
         document.getElementById("customreview").appendChild(tableCourses);
+        
+        //add button with prompt to save current courses with ECTS
+        var save = document.createElement('button');
+        save.type = "submit";
+        save.style = "font-weight: inherit; font-size: inherit; color: inherit; background: none; border: none; border-radius: 0; padding: 5px;";
+        save.textContent = "Save💾";
+        
+        save.onclick = function () {
+            var timeName = prompt();
+            if(timeName == null){
+                return;
+            }
+            var saved = getFromLocal("savedTimetables");
+            saved.set(timeName, localStorage.getItem("courses"));
+            saved.set(timeName + "ECTS", localStorage.getItem("coursesECTS"));
+            setLocal("savedTimetables", saved);
+            location.reload();
+        };
+        document.getElementById("customreview").appendChild(save);
     }
 
     var formButtons = document.createElement('div');
@@ -197,6 +216,45 @@ async function createTimeTable() {
 
     document.getElementById("customreview").appendChild(formButtons);
     document.getElementById("customreview").appendChild(document.createElement('br'));
+
+    if(getFromLocal("savedTimetables").size > 0){
+        //button to load/remove saved timetable and set localstorage
+
+        var saved = getFromLocal("savedTimetables");
+        var loadDiv = document.createElement("div");
+        var removeDiv = document.createElement("div");
+
+        for (const key of saved.keys()) {
+            if (key.endsWith("ECTS")) {
+                continue;
+            }
+            var load = document.createElement('button');
+            load.type = "submit";
+            load.style = "font-weight: inherit; font-size: inherit; color: inherit; background: brightgrey; border: none; border-radius: 0; margin: 1px; padding: 5px;";
+            var removeButton = load.cloneNode(false);
+
+            load.textContent = "↺" + key;
+            load.onclick = function () {
+                localStorage.setItem(coursesLocalStorage, saved.get(key));
+                localStorage.setItem(coursesECTSLocalStorage, saved.get(key + "ECTS"));
+                location.reload();
+            };
+            loadDiv.appendChild(load);
+
+            removeButton.textContent = "🗑" + key;
+            removeButton.onclick = function () {
+                var saved = getFromLocal("savedTimetables");
+                saved.delete(key);
+                saved.delete(key + "ECTS");
+                setLocal("savedTimetables", saved);
+                location.reload();
+            }
+            removeDiv.appendChild(removeButton);
+        }
+        document.getElementById("customreview").appendChild(loadDiv);
+        document.getElementById("customreview").appendChild(removeDiv);
+
+    }
 
 }
 
