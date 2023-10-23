@@ -1,3 +1,5 @@
+const ethBlueButtonStyle = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 12px 5px 12px; font-weight: bold; font-size: inherit;";
+
 function getFromLocal(storageId) {
     let map = new Map();
     if (localStorage.getItem(storageId)) {

@@ -125,7 +125,7 @@ function main(cookieMap) {
 function addCustomDiv() {
     var div = document.createElement('div');
     div.id = "customreview";
-    div.style = "margin-left: 1.5%; margin-right:1.5%";
+    div.style = "margin-left: 1.5%; margin-right:1.5%; font-size: 12px;";
     document.getElementById("contentTop").appendChild(div);
 }
 
@@ -133,7 +133,7 @@ function addButtonWithFunc(text, func, parent) {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = text;
-    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    button.style = ethBlueButtonStyle;
     button.onclick = func;
     if (parent == null) {
         document.getElementById("customreview").appendChild(button);

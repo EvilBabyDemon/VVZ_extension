@@ -2,7 +2,7 @@ function addFilterButton() {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = "Filter";
-    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    button.style = ethBlueButtonStyle;
     button.onclick = function () {
         course_filter(document.getElementById("sessionexam").checked, document.getElementById("endexam").checked, document.getElementById("semesterperf").checked, document.getElementById("slow").checked);
     };

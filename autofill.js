@@ -34,15 +34,21 @@ function addListener() {
 
 function saveFillFeature() {
     const contentMain = document.getElementById("contentMain");
-    const inside = contentMain.getElementsByClassName("inside");
+    let inside = contentMain.getElementsByClassName("inside");
     if (inside.length == 0) {
         return;
     }
+    let customBottom = document.createElement("div");
+    customBottom.id = "customreview-bottom";
+    customBottom.style.fontSize = "12px";
+    inside[0].appendChild(customBottom);
+
     const fillExt = "fillExt";
     let saveButton = document.createElement("button");
     saveButton.textContent = "Save";
+    saveButton.style = ethBlueButtonStyle;
     saveButton.style.position = "relative";
-    saveButton.style.left = "40%";
+    saveButton.style.left = "45%";
     saveButton.style.marginBottom = "5px";
 
     saveButton.onclick = function () {
@@ -63,7 +69,7 @@ function saveFillFeature() {
         setLocal(fillExt, storage);
         location.reload();
     }
-    contentMain.appendChild(saveButton);
+    customBottom.appendChild(saveButton);
 
     let fillMaps = getFromLocal(fillExt);
 
@@ -98,8 +104,8 @@ function saveFillFeature() {
             addLoadAndDeleteButton(loadFill, removeFill, loadDiv, removeDiv, key);
         }
     }
-    contentMain.appendChild(loadDiv);
-    contentMain.appendChild(removeDiv);
+    customBottom.appendChild(loadDiv);
+    customBottom.appendChild(removeDiv);
 }
 
 async function keepField(id, waitField) {

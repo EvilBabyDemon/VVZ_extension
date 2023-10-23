@@ -88,7 +88,7 @@ function addTimeButton(tr_elem, id, courseName, ects) {
     var button = document.createElement('button');
     button.type = "submit";
     button.textContent = "add to timetable";
-    button.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    button.style = ethBlueButtonStyle;
     button.onclick = function () {
         saveCourse(id, courseName, ects);
     };
@@ -114,7 +114,7 @@ async function createTimeTable() {
         var save = document.createElement('button');
         save.type = "submit";
         save.style = "font-weight: inherit; font-size: inherit; color: inherit; background: none; border: none; border-radius: 0; padding: 5px;";
-        save.textContent = "Save💾";
+        save.textContent = "Save 💾";
         
         save.onclick = function () {
             var timeName = prompt();
@@ -141,7 +141,7 @@ async function createTimeTable() {
 
     var create = document.createElement('button');
     create.type = "submit";
-    create.style = "color: #fff; background: #0069B4; border: none; border-radius: 0; padding: 5px 35px 5px 12px; font-weight: bold;";
+    create.style = ethBlueButtonStyle;
     var remove = create.cloneNode(false);
 
     create.id = "createTimetable";
