@@ -1,18 +1,6 @@
 let coursesLocalStorage = "courses";
 let coursesECTSLocalStorage = "coursesECTS";
 
-function getFromLocal(storageId) {
-    var map = new Map();
-    if (localStorage.getItem(storageId)) {
-        map = new Map(JSON.parse(localStorage.getItem(storageId)));
-    }
-    return map;
-}
-
-function setLocal(storageId, map) {
-    localStorage.setItem(storageId, JSON.stringify(Array.from(map.entries())));
-}
-
 function deleteEntry(id) {
     //id is of format lerneinheitId=168203&semkez=2023S
     if (localStorage.getItem(coursesLocalStorage)) {
@@ -216,7 +204,10 @@ async function createTimeTable() {
 
     document.getElementById("customreview").appendChild(formButtons);
     document.getElementById("customreview").appendChild(document.createElement('br'));
+    addSavedTimetables();
+}
 
+function addSavedTimetables() {
     if(getFromLocal("savedTimetables").size > 0){
         //button to load/remove saved timetable and set localstorage
 
@@ -224,38 +215,33 @@ async function createTimeTable() {
         var loadDiv = document.createElement("div");
         var removeDiv = document.createElement("div");
 
+        function loadTable(event) {
+            let key = event.target.id;
+            key = key.substring(0, key.length - 3);
+            let saved = getFromLocal("savedTimetables");
+            localStorage.setItem(coursesLocalStorage, saved.get(key));
+            localStorage.setItem(coursesECTSLocalStorage, saved.get(key + "ECTS"));
+            location.reload();
+        }
+        function removeTable(event) {
+            let key = event.target.id;
+            key = key.substring(0, key.length - 3);
+            let saved = getFromLocal("savedTimetables");
+            saved.delete(key);
+            saved.delete(key + "ECTS");
+            setLocal("savedTimetables", saved);
+            location.reload();
+        }
+
         for (const key of saved.keys()) {
             if (key.endsWith("ECTS")) {
                 continue;
             }
-            var load = document.createElement('button');
-            load.type = "submit";
-            load.style = "font-weight: inherit; font-size: inherit; color: inherit; background: brightgrey; border: none; border-radius: 0; margin: 1px; padding: 5px;";
-            var removeButton = load.cloneNode(false);
-
-            load.textContent = "↺" + key;
-            load.onclick = function () {
-                localStorage.setItem(coursesLocalStorage, saved.get(key));
-                localStorage.setItem(coursesECTSLocalStorage, saved.get(key + "ECTS"));
-                location.reload();
-            };
-            loadDiv.appendChild(load);
-
-            removeButton.textContent = "🗑" + key;
-            removeButton.onclick = function () {
-                var saved = getFromLocal("savedTimetables");
-                saved.delete(key);
-                saved.delete(key + "ECTS");
-                setLocal("savedTimetables", saved);
-                location.reload();
-            }
-            removeDiv.appendChild(removeButton);
+            addLoadAndDeleteButton(loadTable, removeTable, loadDiv, removeDiv, key);
         }
         document.getElementById("customreview").appendChild(loadDiv);
         document.getElementById("customreview").appendChild(removeDiv);
-
     }
-
 }
 
 async function timeTable() {

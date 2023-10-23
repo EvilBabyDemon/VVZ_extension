@@ -29,6 +29,7 @@
         "https://www.vorlesungen.ethz.ch/*"
       ],
       "js": [
+        "helper.js",
         "coursereview-links.js",
         "rating.js",
         "timetable.js",
