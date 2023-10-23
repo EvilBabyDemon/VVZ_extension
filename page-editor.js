@@ -100,6 +100,7 @@ function main(cookieMap) {
                 localStorage.removeItem("unterbereichAbschnittIdExt");
             }, left);
             keepSearch();
+            saveFillFeature();
         }
         if (cookieMap == null || cookieMap.get("timetable")) {
             createTimeTable();

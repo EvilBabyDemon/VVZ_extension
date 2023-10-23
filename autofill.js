@@ -22,14 +22,84 @@ function saveState(event) {
     var tar = event.currentTarget;
     localStorage.setItem(storage, tar.options[tar.selectedIndex].text);
 }
-
+const searchFields = ["studiengangTyp", "deptId", "studiengangAbschnittId", "bereichAbschnittId", "unterbereichAbschnittId"];
 function addListener() {
-    for (id of ["studiengangTyp", "deptId", "studiengangAbschnittId", "bereichAbschnittId", "unterbereichAbschnittId"]) {
-        var elem = document.getElementById(id);
+    for (let id of searchFields) {
+        let elem = document.getElementById(id);
         if (elem != null) {
             elem.addEventListener("change", saveState);
         }
     }
+}
+
+function saveFillFeature() {
+    const contentMain = document.getElementById("contentMain");
+    const inside = contentMain.getElementsByClassName("inside");
+    if (inside.length == 0) {
+        return;
+    }
+    const fillExt = "fillExt";
+    let saveButton = document.createElement("button");
+    saveButton.textContent = "Save";
+    saveButton.style.position = "relative";
+    saveButton.style.left = "40%";
+    saveButton.style.marginBottom = "5px";
+
+    saveButton.onclick = function () {
+        let save = [];
+        for (field of searchFields) {
+            let elem = document.getElementById(field);
+            if (elem != null) {
+                let storage = field + "Ext";
+                save.push([storage, elem.options[elem.selectedIndex].text]);
+            }
+        }
+        let name = prompt();
+        if (name == null) {
+            return;
+        }
+        let storage = getFromLocal(fillExt);
+        storage.set(name, save);
+        setLocal(fillExt, storage);
+        location.reload();
+    }
+    contentMain.appendChild(saveButton);
+
+    let fillMaps = getFromLocal(fillExt);
+
+    let loadDiv = document.createElement("div");
+    let removeDiv = document.createElement("div");
+
+    function loadFill(event) {
+        let key = event.target.id;
+        key = key.substring(0, key.length - 3);
+        let saved = getFromLocal("fillExt");
+        let savedMap = saved.get(key);
+        for (let field of searchFields) {
+            localStorage.removeItem(field + "Ext");
+        }
+        for (let entry of savedMap) {
+            localStorage.setItem(entry[0], entry[1]);
+        }
+        let reset = document.getElementById("reset");
+        reset.click();
+    }
+    function removeFill(event) {
+        let key = event.target.id;
+        key = key.substring(0, key.length - 3);
+        let saved = getFromLocal("fillExt");
+        saved.delete(key);
+        setLocal("fillExt", saved);
+        location.reload();
+    }
+
+    if(fillMaps.size > 0) {
+        for (let key of fillMaps.keys()) {
+            addLoadAndDeleteButton(loadFill, removeFill, loadDiv, removeDiv, key);
+        }
+    }
+    contentMain.appendChild(loadDiv);
+    contentMain.appendChild(removeDiv);
 }
 
 async function keepField(id, waitField) {
