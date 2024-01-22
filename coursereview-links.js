@@ -18,6 +18,13 @@ function recAddUrls(e) {
     );
 
     courseLinks.forEach(function (link) {
+        if (link.getElementsByTagName("span").length != 0 ) {
+            console.log(link.getElementsByTagName("span"));
+            return;
+        }
+        let span = document.createElement("span");
+        link.appendChild(span);
+
         //request the api with the course code
         //https://rubberducky.vsos.ethz.ch:1855/course/851-0708-00L
         let courseCode = link.href.split("=")[1];
@@ -35,10 +42,7 @@ function recAddUrls(e) {
             if (xhr.status == 200) {
                 //check if data == []
                 let data = JSON.parse(JSON.parse(xhr.responseText));
-                console.log(data);
-                console.log(data.length);
                 if (data.length != 0) {
-                    let span = document.createElement("span");
                     if (data.length == 1) {
                         span.textContent = "🗩";
                     } else if (data.length == 2) {
@@ -48,8 +52,7 @@ function recAddUrls(e) {
                     }
                     //inherit style everything from the link
                     //make colour golden
-                    span.style.color = "goldenrod   ";
-                    link.appendChild(span);
+                    span.style.color = "goldenrod";
                 }
             } else {
                 console.log(
