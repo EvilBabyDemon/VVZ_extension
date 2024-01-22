@@ -17,3 +17,6 @@ show if the review site has actual written reviews so you don't open it just to 
 Put the rating columns all into one -> 5 / 3.5 / 3 / 1 / 4.8
 - over hover show precise text
 - add icon to indicate if review exists or not
+
+
+change var to let, smaller scope -> better to not shadow accidentally
