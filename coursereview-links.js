@@ -12,7 +12,9 @@ function recAddUrls(e) {
             recAddUrls(c);
         }
     });
+}
 
+function addIconsIfReview() {
     let courseLinks = document.querySelectorAll(
         "a[href^='https://n.ethz.ch/~lteufelbe/coursereview/?course=']"
     );

@@ -119,6 +119,7 @@ function main(cookieMap) {
     if (cookieMap == null || cookieMap.get("crlinks")) {
         var all = document.body.querySelectorAll("*");
         recAddUrls(all);
+        addIconsIfReview();
     }
 }
 
