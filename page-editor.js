@@ -52,6 +52,9 @@ function main(cookieMap) {
         if (cookieMap == null || cookieMap.get("hover")) {
             addToolTipHover(cookieMap);
         }
+        if (cookieMap == null || cookieMap.get("course-links")) {
+            modifyCourseLinks();
+        }
     }
 
     // search selection
@@ -165,4 +168,12 @@ function addCheckbox(id, name, checked) {
     document.getElementById("customreview").appendChild(checkbox);
     document.getElementById("customreview").appendChild(label);
     document.getElementById("customreview").appendChild(document.createElement('br'));
+}
+
+function modifyCourseLinks() {
+    document.querySelectorAll("td > b > a").forEach(link => {
+        if (link.href.includes("LEHRVERANSTALTUNGEN")) {
+            link.href = link.href.replace("LEHRVERANSTALTUNGEN", "ALLE")
+        }
+    })
 }
