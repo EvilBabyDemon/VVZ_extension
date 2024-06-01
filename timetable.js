@@ -96,9 +96,9 @@ function showNotification(message) {
     notification.style.backgroundColor = "#ccc";
     notification.style.textAlign = "center";
     document.body.append(notification);
-    // setTimeout(function () {
-    //     notification.remove();
-    // }, 3000)
+    setTimeout(function () {
+        notification.remove();
+    }, 3000)
 }
 
 
