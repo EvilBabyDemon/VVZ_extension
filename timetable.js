@@ -84,6 +84,24 @@ function addCourseSelector() {
 }
 
 
+function showNotification(message) {
+    var notification = document.createElement("div");
+    notification.innerHTML = message;
+    notification.style.position = "fixed";
+    notification.style.bottom = "20px";
+    notification.style.right = "20px";
+    notification.style.width = "220px";
+    notification.style.padding = "4px 8px";
+    notification.style.border = "1px solid #666";
+    notification.style.backgroundColor = "#ccc";
+    notification.style.textAlign = "center";
+    document.body.append(notification);
+    // setTimeout(function () {
+    //     notification.remove();
+    // }, 3000)
+}
+
+
 function addTimeButton(tr_elem, id, courseName, ects) {
     var button = document.createElement('button');
     button.type = "submit";
@@ -91,6 +109,7 @@ function addTimeButton(tr_elem, id, courseName, ects) {
     button.style = ethBlueButtonStyle;
     button.onclick = function () {
         saveCourse(id, courseName, ects);
+        showNotification("✔️ Course added to timetable. Go to <a class='linkIntern' href='https://www.vvz.ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view'>Home</a>");
     };
     tr_elem.appendChild(button);
 }
