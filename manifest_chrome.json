@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "description": "Better user experience on vvz.ethz.ch Features: Keep Search, Timetable Creator, filter by grading, Ratings from CourseReview",
   "name": "vvz-coursereview",
-  "version": "1.6.1.2",
+  "version": "1.6.2",
   "action": {
     "default_popup": "popup.html"
   },
