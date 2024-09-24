@@ -28,6 +28,9 @@ async function showOldOccurences() {
         var end = document.createElement("div");
         document.getElementById("contentContainer").appendChild(end);
         
+        var start_timeout = 200;
+        var max_timeout = start_timeout * 2 ** 6; // try 6 times (with backoff of more than 10 seconds)
+        var timeout = start_timeout;
         // go back 14 semester, max amount they show atm (could be the possibility that the new semestesr is not out yet and therefor the oldest available one wont be checked/shown though)
         for (var i = 0; i < 12; i++) {
             var sem = year + season;
@@ -48,6 +51,13 @@ async function showOldOccurences() {
             const dom = new DOMParser().parseFromString(unitHTML.replace(/&nbsp;/g, " "), "text/html");
 
             if (dom.getElementsByClassName("error").length > 0) {
+                await new Promise(r => setTimeout(r, timeout));
+                i -= 1;
+                timeout *= 2;
+                if (timeout > max_timeout) {
+                    i += 1;
+                    timeout = start_timeout;
+                }
                 continue;
             }
 
