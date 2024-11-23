@@ -17,7 +17,7 @@ function course_filter(session, end, semester, slow) {
     }
 
     const string = document.body.innerHTML;
-    const res = [...string.matchAll(/<td><b><a href="(\/Vorlesungsverzeichnis\/lerneinheit.view\?lerneinheitId=\d+&amp;semkez=\d+[SW]&amp;).+?">.+?<\/a><\/b>/g)];
+    const res = [...string.matchAll(/<td><b><a href=".+?(\/Vorlesungsverzeichnis\/lerneinheit.view\?lerneinheitId=\d+&amp;semkez=\d+[SW]&amp;).+?">.+?<\/a><\/b>/g)];
     var trs = document.querySelectorAll("tr");
     var trsf = [...trs].filter(element => {
         tds = element.getElementsByTagName("td");
