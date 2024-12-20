@@ -37,7 +37,8 @@
         "autofill.js",
         "show_more_info.js",
         "find_old.js",
-        "page-editor.js"
+        "page-editor.js",
+        "all-button.js"
       ]
     },
     {

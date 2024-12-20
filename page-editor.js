@@ -55,6 +55,9 @@ function main(cookieMap) {
         if (cookieMap == null || cookieMap.get("course-links")) {
             modifyCourseLinks();
         }
+        if (cookieMap == null || cookieMap.get("all-button")) {
+            addAllButton();
+        }
     }
 
     // search selection
