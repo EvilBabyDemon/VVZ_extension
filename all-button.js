@@ -1,7 +1,6 @@
 function addAllButton() {
         [...document.getElementsByClassName("pagination")].forEach(pagination => {
         //search grey in pagination
-        //pagination.includes("grey")
         var arr = pagination.getElementsByTagName("img")
         if (arr.length == 0) {  
             return;
