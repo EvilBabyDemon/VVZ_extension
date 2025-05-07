@@ -29,7 +29,7 @@ function addCourseReviewRating() {
         if (tds.length > 5 && tds[0].className == "border-no") {
             const courseNr = tds[0].textContent;
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://rubberducky.vsos.ethz.ch:1855/rating/" + courseNr);
+            xhr.open("GET", "https://cr.vsos.ethz.ch/getRatingsAvg?course=" + courseNr);
             xhr.send();
             xhr.onerror = function () {
                 console.log("Network error occurred");
@@ -37,11 +37,11 @@ function addCourseReviewRating() {
 
             xhr.onload = function () {
                 if (xhr.status == 200) {
-                    var reg = xhr.responseText.matchAll(/: (.*?)[,}]/g);
-                    for (resp of reg) {
+                    let data = JSON.parse(xhr.responseText);
+                    for (let key in data) {
                         var td = document.createElement("td")
-                        if (resp[1] != "null") {
-                            td.textContent = parseFloat(resp[1]).toFixed(2);
+                        if (data[key] != null) {
+                            td.textContent = parseFloat(data[key]).toFixed(2);
                         }
                         r.appendChild(td);
                     }

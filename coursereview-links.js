@@ -5,7 +5,7 @@ function recAddUrls(e) {
             if (element.tagName != "A") {
                 element.innerHTML = element.innerHTML.replaceAll(
                     /(\d{3}-\d{4}-[0-9A-Z]{3})/g,
-                    '<a href="https://n.ethz.ch/~lteufelbe/coursereview/?course=$&" target="_blank">$&</a>'
+                    '<a href="https://coursereview.ch/course/$&" target="_blank">$&</a>'
                 );
             }
         } else {
@@ -16,7 +16,7 @@ function recAddUrls(e) {
 
 function addIconsIfReview() {
     let courseLinks = document.querySelectorAll(
-        "a[href^='https://n.ethz.ch/~lteufelbe/coursereview/?course=']"
+        "a[href^='https://coursereview.ch/course/']"
     );
 
     courseLinks.forEach(function (link) {
@@ -28,12 +28,12 @@ function addIconsIfReview() {
         link.appendChild(span);
 
         //request the api with the course code
-        //https://rubberducky.vsos.ethz.ch:1855/course/851-0708-00L
-        let courseCode = link.href.split("=")[1];
+        //https://cr.vsos.ethz.ch/getReviews?course=851-0708-00L
+        let courseCode = link.href.split("/course/")[1];
         let xhr = new XMLHttpRequest();
         xhr.open(
             "GET",
-            "https://rubberducky.vsos.ethz.ch:1855/course/" + courseCode
+            "https://cr.vsos.ethz.ch/getReviews?course=" + courseCode
         );
         xhr.send();
         xhr.onerror = function () {
@@ -42,9 +42,9 @@ function addIconsIfReview() {
 
         xhr.onload = function () {
             if (xhr.status == 200) {
-                //check if data == []
-                let data = JSON.parse(JSON.parse(xhr.responseText));
-                if (data.length != 0) {
+                //check if data == [] or null
+                let data = JSON.parse(xhr.responseText);
+                if (data != null && data.length != 0) {
                     if (data.length == 1) {
                         span.textContent = "🗩";
                     } else if (data.length == 2) {

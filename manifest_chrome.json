@@ -11,6 +11,7 @@
   ],
   "host_permissions": [
     "https://rubberducky.vsos.ethz.ch/*",
+    "https://cr.vsos.ethz.ch/*",
     "https://www.vvz.ethz.ch/*",
     "https://www.vorlesungen.ethz.ch/*",
     "https://www.red9.ethz.ch/*"
