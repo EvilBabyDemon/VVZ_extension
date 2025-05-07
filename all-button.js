@@ -18,6 +18,13 @@ function addAllButton() {
         if (!allTag.href.includes("seite=0")) {
             allTag.href += "&seite=0";
         }
+        //need to have some kind of ansicht=X else it won't show all
+        // 1 Course units / Lerneinheiten (default) 
+        // 2 Catalogue data / Katalogdaten 
+        // 3 Courses / Lehrveranstaltungen
+        if (!allTag.href.includes("ansicht=")) {
+            allTag.href += "&ansicht=1";
+        }
         if (document.URL.includes("lang=en")) {
             allTag.textContent = "All";
         } else {
