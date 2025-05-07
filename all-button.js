@@ -25,6 +25,10 @@ function addAllButton() {
         if (!allTag.href.includes("ansicht=")) {
             allTag.href += "&ansicht=1";
         }
+        //actually might be the search tag
+        if (allTag.href.includes("search=on")) {
+            allTag.href = allTag.href.replace(/search=on/, "");
+        } 
         if (document.URL.includes("lang=en")) {
             allTag.textContent = "All";
         } else {
