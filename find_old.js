@@ -24,7 +24,7 @@ async function showOldOccurences() {
         } else {
             season = "W";
         }
-        var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+        var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
         var end = document.createElement("div");
         document.getElementById("contentContainer").appendChild(end);
         

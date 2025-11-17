@@ -44,7 +44,7 @@ function course_filter(session, end, semester, slow) {
 
         const xhr = new XMLHttpRequest();
         
-        var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+        var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
 
         xhr.open("GET", url + decodeHtml(element[1]) + "ansicht=LEISTUNGSKONTROLLE&lang=de");
         xhr.send();

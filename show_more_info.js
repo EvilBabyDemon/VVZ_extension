@@ -85,7 +85,7 @@ function addPopOut(event, content) {
         const xhr = new XMLHttpRequest();
 
         var url_end = urls[0].href.match(/(\/Vorlesungsverzeichnis\/lerneinheit.view\?lerneinheitId=\d+&semkez=\d+[SW]&)/g);
-        var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+        var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
         var lang = window.location.href.match(/lang=../)[0];
         if (lang == null) {
             lang = "lang=de";

@@ -107,9 +107,10 @@ function addTimeButton(tr_elem, id, courseName, ects) {
     button.type = "submit";
     button.textContent = "add to timetable";
     button.style = ethBlueButtonStyle;
+    var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
     button.onclick = function () {
         saveCourse(id, courseName, ects);
-        showNotification("✔️ Course added to timetable. Go to <a class='linkIntern' href='https://www.vvz.ethz.ch/Vorlesungsverzeichnis/sucheLehrangebotPre.view'>Home</a>");
+        showNotification("✔️ Course added to timetable. Go to <a class='linkIntern' href='" + url + "/Vorlesungsverzeichnis/sucheLehrangebotPre.view'>Home</a>");
     };
     tr_elem.appendChild(button);
 }
@@ -188,7 +189,7 @@ async function createTimeTable() {
     var courseMap = getFromLocal(coursesLocalStorage);
 
     if (courseMap.size > 0) { //TODO: remove code in 5 versions
-        var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+        var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
         for (const key of courseMap.keys()) {
             if (!ectsMap.get(key)) {
                 let unitReq = await fetch(`${url}/lerneinheit.view?ansicht=LEISTUNGSKONTROLLE&${key}`);
@@ -329,7 +330,7 @@ async function timeTable() {
     var courseRows = getFromLocal(coursesLocalStorage);
     let htmls = [];
 
-    var url = window.location.href.match(/https:\/\/www\..*\.ethz\.ch/)[0];
+    var url = window.location.href.match(/https:\/\/.*\.ethz\.ch/)[0];
     for (const r of courseRows.keys()) {
         if (document.getElementById(r) != null && document.getElementById(r).checked) {
             console.log(`${url}/lerneinheit.view?${r}`);
