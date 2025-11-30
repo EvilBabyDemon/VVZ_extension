@@ -489,7 +489,8 @@ async function timeTable() {
 
                                 tdIn.rowSpan = values[1][1];
                                 var tdInHeight = values[1][1] * 100.0 / ov[1];
-                                tdIn.style = "height: " + tdInHeight + "%; font-size: 13px; background:#ebf3f3; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
+                                let bg = values[1][0]?.startsWith("V") ? "#e3edf6" : "#ebf3f3"
+                                tdIn.style = "height: " + tdInHeight + "%; font-size: 13px; background:" + bg + "; padding: 0px; text-align: center; vertical-align: middle; border: none; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; font-weight: bold;  color: #666;"
                                 tdIn.textContent = values[1][0] + " " + (values[1][3] != null ? values[1][3] : "");
                                 trIn.appendChild(tdIn);
                             }
