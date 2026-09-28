@@ -4,7 +4,7 @@ Browser extension for a better user experience when using https://vvz.ethz.ch.
 ## Features:  
 
 ### Timetable Creator
-You can add courses while browsing through VVZ and then display a timetable like you would see in MyStudies. Helpful to check for any overlaps for your upcoming semester or if you just wanna see how your timetable will look like somewhat.
+You can add courses while browsing through VVZ and then display a timetable like you would see in MyStudies. Helpful to check for any overlaps for your upcoming semester or if you just want to see how your timetable will look like somewhat.
 
 ### Keep Structure in VVZ Search Menu:  
 Whenever you switch semester vvz removes any selections you already made under Structure. This feature allows you to keep them and easily search through different semesters.  
@@ -18,7 +18,7 @@ Have all the information you want in the search results instead of having to cli
 All old versions of a course can be quickly found.
 
 ### CourseReview:  
-Replaces all course_ids with links to https://n.ethz.ch/~lteufelbe/coursereview/course/course_id/ to easily check out reviews of a course.  
+Replaces all course_ids with links to https://coursereview.ch/course/course_id/ to easily check out reviews of a course.  
 You can also see Star ratings from CourseReview right while browsing VVZ. 
 
 
